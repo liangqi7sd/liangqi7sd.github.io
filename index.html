@@ -348,6 +348,26 @@
   @media(max-width:860px){
     .gb-wrap{grid-template-columns:1fr;gap:20px;}
   }
+
+  /* ---------- 作品入口：内联按钮 + 右下角固定按钮 ---------- */
+  .btn-demo{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--accent);color:#fff;text-decoration:none;
+    font-size:14.5px;font-weight:600;padding:10px 22px;border-radius:999px;
+    transition:.18s;
+  }
+  .btn-demo:hover{background:var(--accent-ink);}
+  .float-entry{
+    position:fixed;right:22px;bottom:22px;z-index:60;
+    display:inline-flex;align-items:center;gap:7px;
+    background:var(--accent);color:#fff;text-decoration:none;
+    font-size:14px;font-weight:600;padding:11px 18px;border-radius:999px;
+    box-shadow:0 8px 22px rgba(47,111,94,.28);transition:.18s;
+  }
+  .float-entry:hover{background:var(--accent-ink);transform:translateY(-1px);}
+  @media(max-width:640px){
+    .float-entry{right:14px;bottom:14px;padding:9px 14px;font-size:13px;}
+  }
 </style>
 </head>
 <body>
@@ -721,7 +741,7 @@
   <section id="works">
     <div class="sec-head">
       <h2><span class="idx">03</span> 作品演示</h2>
-      <p>把一个学习过程真正做出来、能打开试的东西。下面是分别用 PyTorch 和 TensorFlow 实现的 XOR 多层感知机，跑在云端，可以直接点按钮试预测。</p>
+      <p>把一个学习过程真正做出来、能打开试的东西。下面两个：一个是跑在云端的 XOR 多层感知机演示，一个是《三层塔》—— 用 galgame 的形式，在浏览器里真跑一个多层感知机。</p>
     </div>
 
     <div class="demo-hero">
@@ -736,6 +756,20 @@
       <div class="demo-link">
         独立打开：<a href="https://xor-mlp-demo.app.workbuddy.host/?sharecode=UQKIE5B4J3" target="_blank" rel="noopener">xor-mlp-demo.app.workbuddy.host</a>
       </div>
+    </div>
+
+    <div class="demo-hero">
+      <div class="dh-head"><div class="en">🏯</div><h5>三层塔 · 一个用 galgame 讲多层感知机的短篇</h5></div>
+      <p class="desc">
+        塔里住着三个角色：一层阿零只放正数过去（ReLU），二层西格把所有数压进 0 到 1（Sigmoid），三层塔恩只看最后那个数（tanh）。
+        每天傍晚你在塔下说一句话，塔把它一层层往上送，再送下来一个回答。
+      </p>
+      <p class="desc">
+        游戏里跑的是一个真的 2-3-2-1 网络，观测窗里的每个数字都来自当前权重；三个结局对应三种训练的失败方式 ——
+        绕开那个熄掉的房间、一步迈过头、或者学成只会说一句话。大约 5 分钟。
+      </p>
+      <a class="btn-demo" href="galgame.html">▶ 进去看看</a>
+      <span class="demo-link" style="margin-left:12px">也可以直接打开：<a href="galgame.html">galgame.html</a></span>
     </div>
   </section>
 
@@ -854,6 +888,8 @@
 })();
 </script>
 
+<!-- 右下角固定入口：三层塔 -->
+<a class="float-entry" href="galgame.html" title="三层塔 · 一个用 galgame 讲多层感知机的短篇">▶ 三层塔</a>
 
 </body>
 </html>
