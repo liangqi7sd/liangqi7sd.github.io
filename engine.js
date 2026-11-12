@@ -305,6 +305,15 @@ window.Engine = (function () {
       togglePanel();
     });
 
+    /* 打开后，点观测窗自己的标题（或 ✕）收起 */
+    var panelHead = $('panel-head');
+    if (panelHead) {
+      panelHead.addEventListener('click', function (e) {
+        e.stopPropagation();
+        hidePanel();
+      });
+    }
+
     $('start').addEventListener('click', function () {
       if (S.started) return;
       S.started = true;

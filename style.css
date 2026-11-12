@@ -168,6 +168,7 @@ body.panel-open #dialog{right:calc(var(--panel-w) + 46px)}
   font-size:11px; letter-spacing:.2em; font-family:var(--sans); transition:all .2s;
 }
 #panel-btn:hover{color:var(--cyan); border-color:rgba(127,219,255,.45)}
+body.panel-open #panel-btn{opacity:0; pointer-events:none}
 
 /* 观测窗 */
 #panel{
@@ -180,7 +181,12 @@ body.panel-open #dialog{right:calc(var(--panel-w) + 46px)}
 }
 body.panel-open #panel{transform:none}
 .p-head{display:flex; justify-content:space-between; align-items:baseline;
-  font-size:11px; letter-spacing:.24em; color:rgba(150,175,210,.6); margin-bottom:4px}
+  font-size:11px; letter-spacing:.24em; color:rgba(150,175,210,.6); margin-bottom:4px;
+  cursor:pointer; user-select:none; transition:color .2s}
+.p-head:hover{color:rgba(200,225,255,.92)}
+.p-right{display:inline-flex; align-items:center; gap:9px}
+.p-x{font-style:normal; font-size:11px; letter-spacing:0; opacity:.45; transition:opacity .2s}
+.p-head:hover .p-x{opacity:.95}
 #epoch{font-family:var(--mono); letter-spacing:.06em; color:rgba(127,219,255,.7)}
 
 #net{width:100%; height:auto; flex:0 1 auto; aspect-ratio:300 / 360; max-height:54vh; margin-top:4px}
