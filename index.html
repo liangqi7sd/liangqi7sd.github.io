@@ -4,25 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>我的 AI Agent 使用记录 · 汪子恒</title>
+<meta name="description" content="汪子恒的个人 AI Agent 使用记录：按时间倒序整理 2026 年秋季学期用过的 Agent、做过的任务和拿到的结果。">
 <style>
   :root{
-    --bg:#f7f7f5;
+    --sidebar-w:252px;
+    --bg:#fbfaf7;
+    --side-bg:#f3f2ec;
     --surface:#ffffff;
-    --surface-2:#fbfbfa;
-    --ink:#1f2328;
-    --ink-soft:#4a5058;
-    --ink-mute:#7a8189;
-    --line:#e6e6e2;
-    --line-soft:#efefeb;
+    --ink:#1d211e;
+    --ink-soft:#4e554f;
+    --ink-mute:#6b726b;
+    --line:#e5e3da;
+    --line-soft:#efeee7;
     --accent:#2f6f5e;
-    --accent-soft:#e8f1ee;
-    --accent-ink:#20503f;
-    --warm:#b06a2c;
-    --warm-soft:#fbf1e6;
-    --radius:14px;
-    --radius-sm:9px;
-    --shadow:0 1px 2px rgba(31,35,40,.04), 0 6px 20px rgba(31,35,40,.05);
-    --shadow-hover:0 2px 4px rgba(31,35,40,.05), 0 12px 32px rgba(31,35,40,.09);
+    --accent-ink:#1f4e40;
+    --accent-soft:#e9f1ed;
+    --radius:12px;
     --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
   }
   *{box-sizing:border-box;}
@@ -36,421 +33,563 @@
     line-height:1.75;
     -webkit-font-smoothing:antialiased;
   }
+  ::selection{background:var(--accent-soft);color:var(--accent-ink);}
+  h1,h2,h3{text-wrap:balance;}
+  p{text-wrap:pretty;}
 
-  /* ---------- 顶栏 ---------- */
-  .topbar{
-    position:sticky;top:0;z-index:50;
-    backdrop-filter:blur(12px);
-    background:rgba(247,247,245,.86);
-    border-bottom:1px solid var(--line);
+  /* ---------- 左侧竖向导航 ---------- */
+  .sidebar{
+    position:fixed;top:0;left:0;bottom:0;z-index:50;
+    width:var(--sidebar-w);
+    display:flex;flex-direction:column;
+    padding:34px 22px 22px;
+    background:var(--side-bg);
+    border-right:1px solid var(--line);
+    overflow-y:auto;
   }
-  .topbar-inner{
-    max-width:1080px;margin:0 auto;padding:12px 24px;
-    display:flex;align-items:center;gap:20px;
+  .brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--ink);}
+  .brand-mark{
+    flex:0 0 auto;width:36px;height:36px;border-radius:50%;
+    display:grid;place-items:center;
+    background:var(--accent);color:#fff;
+    font-size:14px;font-weight:650;letter-spacing:.02em;
   }
-  .brand{font-weight:650;letter-spacing:.01em;font-size:15px;color:var(--ink);text-decoration:none;white-space:nowrap;}
-  .brand .dot{color:var(--accent);}
-  .nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap;}
-  .nav a{
-    color:var(--ink-soft);text-decoration:none;font-size:14px;
-    padding:6px 11px;border-radius:8px;transition:.18s;
+  .brand-text b{display:block;font-size:14.5px;font-weight:650;line-height:1.3;letter-spacing:.01em;}
+  .brand-text span{
+    display:block;margin-top:2px;
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;
+    color:var(--ink-mute);text-transform:uppercase;
   }
-  .nav a:hover{background:var(--accent-soft);color:var(--accent-ink);}
 
-  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+  .nav-title{
+    margin:38px 0 10px 10px;
+    font-family:var(--mono);font-size:10px;font-weight:600;
+    letter-spacing:.13em;color:var(--ink-mute);text-transform:uppercase;
+  }
+  .side-nav{position:relative;display:flex;flex-direction:column;gap:1px;}
+  .side-nav::before{
+    content:"";position:absolute;left:9px;top:8px;bottom:8px;width:1px;
+    background:var(--line);
+  }
+  .side-nav a{
+    position:relative;display:flex;flex-direction:column;
+    padding:8px 8px 8px 27px;border-radius:7px;
+    text-decoration:none;
+    transition:background .15s ease;
+  }
+  .side-nav a::before{
+    content:"";position:absolute;left:5px;top:50%;width:8px;height:8px;margin-top:-4px;
+    border-radius:50%;background:var(--side-bg);border:1.5px solid #c8cac3;
+    transition:.15s ease;
+  }
+  .side-nav a:hover{background:rgba(47,111,94,.055);}
+  .nav-date{
+    font-family:var(--mono);font-size:10px;line-height:1.5;
+    letter-spacing:.05em;color:var(--ink-mute);
+    transition:color .15s ease;
+  }
+  .nav-label{
+    font-size:13.5px;line-height:1.55;font-weight:560;
+    color:var(--ink-soft);transition:color .15s ease;
+  }
+  .side-nav a.active{background:var(--accent-soft);}
+  .side-nav a.active::before{
+    background:var(--accent);border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(47,111,94,.12);
+  }
+  .side-nav a.active .nav-date,
+  .side-nav a.active .nav-label{color:var(--accent-ink);}
 
-  /* ---------- Hero ---------- */
-  .hero{padding:72px 0 44px;}
+  .side-foot{
+    margin-top:auto;padding-top:18px;
+    border-top:1px solid var(--line);
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    font-family:var(--mono);font-size:10px;letter-spacing:.02em;
+    color:var(--ink-mute);
+  }
+  .side-foot a{color:var(--ink-mute);text-decoration:none;}
+  .side-foot a:hover{color:var(--accent-ink);}
+
+  /* ---------- 页面主体 ---------- */
+  .page{margin-left:var(--sidebar-w);}
+  .container{max-width:860px;margin:0 auto;padding:0 44px;}
+
+  .hero{padding:80px 0 52px;border-bottom:1px solid var(--line);}
   .eyebrow{
-    display:inline-block;font-size:12.5px;letter-spacing:.09em;font-weight:600;
-    color:var(--accent-ink);background:var(--accent-soft);
-    padding:5px 12px;border-radius:999px;margin-bottom:22px;
+    display:flex;align-items:center;gap:9px;
+    font-family:var(--mono);font-size:10px;font-weight:600;
+    letter-spacing:.14em;color:var(--accent-ink);text-transform:uppercase;
   }
+  .eyebrow::before{content:"";width:18px;height:1px;background:var(--accent);}
   .hero h1{
-    font-size:clamp(28px,4.4vw,44px);
-    line-height:1.24;margin:0 0 18px;font-weight:680;letter-spacing:-.015em;
+    margin:20px 0 18px;max-width:740px;
+    font-size:clamp(30px,3.6vw,44px);line-height:1.3;
+    font-weight:680;letter-spacing:-.022em;
   }
-  .hero h1 .thin{color:var(--ink-mute);font-weight:480;}
-  .hero p.lede{
-    font-size:17px;color:var(--ink-soft);max-width:660px;margin:0 0 30px;
-  }
-  .idcard{
-    display:flex;flex-wrap:wrap;gap:10px;
-  }
-  .chip{
-    font-size:13.5px;color:var(--ink-soft);background:var(--surface);
-    border:1px solid var(--line);border-radius:999px;padding:6px 14px;
-  }
-  .chip b{color:var(--ink);font-weight:600;}
+  .hero h1 .thin{color:var(--ink-mute);font-weight:420;}
+  .lede{max-width:620px;margin:0;font-size:15.5px;line-height:1.9;color:var(--ink-soft);}
+  .meta{display:flex;flex-wrap:wrap;align-items:baseline;gap:7px 20px;margin-top:26px;font-size:12.5px;color:var(--ink-mute);}
+  .meta .m-item{display:inline-flex;align-items:baseline;gap:5px;}
+  .meta b{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink);}
 
-  /* ---------- 概览统计 ---------- */
-  .stats{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-    gap:12px;margin:38px 0 8px;
+  .section{padding:54px 0 46px;border-bottom:1px solid var(--line-soft);scroll-margin-top:28px;}
+  .section:last-of-type{border-bottom:0;}
+  .sec-head{margin-bottom:24px;}
+  .sec-kicker{display:flex;align-items:center;gap:9px;margin-bottom:9px;}
+  .sec-date{
+    font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.06em;
+    color:var(--accent-ink);background:var(--accent-soft);
+    padding:3px 8px;border-radius:5px;
   }
-  .stat{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:18px 20px;
-  }
-  .stat .num{font-size:30px;font-weight:680;line-height:1.15;color:var(--accent);letter-spacing:-.02em;}
-  .stat .lbl{font-size:13px;color:var(--ink-mute);margin-top:2px;}
-
-  /* ---------- 章节 ---------- */
-  section{padding:56px 0 8px;scroll-margin-top:70px;}
-  .sec-head{margin-bottom:28px;}
   .sec-head h2{
-    font-size:24px;font-weight:660;margin:0 0 8px;letter-spacing:-.01em;
-    display:flex;align-items:center;gap:12px;
+    margin:0 0 7px;font-size:clamp(21px,2.4vw,25px);
+    font-weight:660;letter-spacing:-.015em;line-height:1.4;
   }
-  .sec-head h2 .idx{
-    font-family:var(--mono);font-size:13px;font-weight:600;color:var(--accent);
-    background:var(--accent-soft);border-radius:7px;padding:3px 9px;letter-spacing:.02em;
-  }
-  .sec-head p{color:var(--ink-mute);margin:0;font-size:15px;max-width:700px;}
+  .sec-head p{margin:0;max-width:640px;font-size:14px;line-height:1.8;color:var(--ink-mute);}
 
-  /* ---------- 筛选 ---------- */
-  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
-  .filters button{
-    font:inherit;font-size:13.5px;cursor:pointer;
-    background:var(--surface);border:1px solid var(--line);color:var(--ink-soft);
-    padding:6px 15px;border-radius:999px;transition:.18s;
+  /* ---------- 每个时间段的记录 ---------- */
+  .entries{display:grid;gap:14px;}
+  .entry{
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);padding:20px 22px;
   }
-  .filters button:hover{border-color:var(--accent);color:var(--accent-ink);}
-  .filters button.active{background:var(--accent);border-color:var(--accent);color:#fff;}
-
-  /* ---------- Agent 卡片 ---------- */
-  .agents{display:grid;gap:16px;}
-  .card{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:0;overflow:hidden;transition:.22s;box-shadow:var(--shadow);
-  }
-  .card:hover{box-shadow:var(--shadow-hover);border-color:#d8d8d3;}
-  .card-head{
-    display:flex;align-items:flex-start;gap:16px;
-    padding:20px 22px;cursor:pointer;user-select:none;
-  }
-  .icon{
-    flex:0 0 auto;width:46px;height:46px;border-radius:12px;
-    display:grid;place-items:center;font-size:22px;
+  .entry-head{display:flex;align-items:flex-start;gap:13px;}
+  .entry-icon{
+    flex:0 0 auto;width:36px;height:36px;border-radius:9px;
+    display:grid;place-items:center;font-size:17px;line-height:1;
     background:var(--accent-soft);
   }
-  .icon.warm{background:var(--warm-soft);}
-  .card-title{flex:1 1 auto;min-width:0;}
-  .card-title h3{
-    margin:0 0 5px;font-size:17px;font-weight:640;letter-spacing:-.005em;
-    display:flex;align-items:center;gap:9px;flex-wrap:wrap;
+  .entry-title{min-width:0;}
+  .entry-title h3{
+    margin:0 0 2px;font-size:16px;font-weight:650;line-height:1.5;
+    letter-spacing:-.005em;display:flex;align-items:center;flex-wrap:wrap;gap:8px;
   }
-  .card-title .role{font-size:14px;color:var(--ink-mute);margin:0;}
   .tag{
-    font-size:11.5px;font-weight:600;letter-spacing:.03em;
-    padding:2.5px 9px;border-radius:6px;
-    background:#eef4f2;color:var(--accent-ink);
+    font-size:10px;font-weight:600;letter-spacing:.04em;
+    color:var(--ink-mute);background:#fafaf7;
+    border:1px solid var(--line);border-radius:4px;padding:1px 6px;
   }
-  .tag.study{background:#eaeff8;color:#33497d;}
-  .tag.campus{background:#f6ece0;color:#8a5a1e;}
-  .tag.skill{background:#eef4f2;color:var(--accent-ink);}
-  .chev{
-    flex:0 0 auto;width:26px;height:26px;border-radius:50%;
-    display:grid;place-items:center;color:var(--ink-mute);
-    transition:transform .25s;margin-top:8px;
-  }
-  .card.open .chev{transform:rotate(180deg);}
+  .entry-title .role{margin:0;font-size:13px;line-height:1.6;color:var(--ink-mute);}
 
-  .card-body{
-    max-height:0;overflow:hidden;
-    transition:max-height .34s ease;
-    border-top:1px solid transparent;
+  .entry-body{
+    display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:26px;
+    margin-top:16px;padding-top:15px;border-top:1px solid var(--line-soft);
   }
-  .card.open .card-body{border-top-color:var(--line-soft);}
-  .card-body-inner{padding:20px 22px 24px;}
-  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
-  @media(max-width:720px){.grid2{grid-template-columns:1fr;gap:18px;}}
+  .entry-col h4{
+    margin:0 0 7px;
+    font-family:var(--mono);font-size:9.5px;font-weight:600;
+    letter-spacing:.09em;color:var(--ink-mute);text-transform:uppercase;
+  }
+  .entry-col ul{margin:0;padding:0;list-style:none;}
+  .entry-col li{
+    position:relative;padding-left:13px;margin-bottom:4px;
+    font-size:13.5px;line-height:1.75;color:var(--ink-soft);
+  }
+  .entry-col li:last-child{margin-bottom:0;}
+  .entry-col li::before{
+    content:"";position:absolute;left:0;top:.72em;
+    width:4px;height:4px;border-radius:50%;background:#c9ccc5;
+  }
+  .entry-col.result li::before{background:var(--accent);}
+  .entry-col li b{font-weight:600;color:var(--ink);}
+  .entry-col.result li b{color:var(--accent-ink);}
 
-  .block h4{
-    margin:0 0 9px;font-size:13px;font-weight:660;letter-spacing:.06em;
-    color:var(--ink-mute);text-transform:uppercase;
-    display:flex;align-items:center;gap:7px;
+  code{
+    font-family:var(--mono);font-size:.92em;
+    background:#f3f3ee;border:1px solid var(--line-soft);
+    border-radius:4px;padding:0 4px;color:#3c443e;
   }
-  .block h4::before{
-    content:"";width:3px;height:13px;border-radius:2px;background:var(--accent);
-  }
-  .block.warm h4::before{background:var(--warm);}
-  .block ul{margin:0;padding-left:0;list-style:none;}
-  .block li{
-    position:relative;padding-left:17px;margin-bottom:7px;
-    font-size:14.5px;color:var(--ink-soft);line-height:1.7;
-  }
-  .block li::before{
-    content:"";position:absolute;left:2px;top:.68em;
-    width:5px;height:5px;border-radius:50%;background:#c3c8cc;
-  }
-  .block li b{color:var(--ink);font-weight:600;}
 
   .prompt{
-    margin-top:16px;background:var(--surface-2);border:1px solid var(--line-soft);
-    border-radius:var(--radius-sm);padding:12px 15px;
-    font-size:13.5px;color:var(--ink-soft);
+    display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 9px;
+    margin-top:14px;padding:9px 12px;
+    background:#f8f8f4;border:1px solid var(--line-soft);border-radius:8px;
+    font-size:12.5px;line-height:1.7;color:var(--ink-soft);
   }
   .prompt .k{
-    font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.05em;
-    color:var(--ink-mute);display:block;margin-bottom:5px;
+    font-family:var(--mono);font-size:9.5px;font-weight:600;
+    letter-spacing:.07em;color:var(--ink-mute);text-transform:uppercase;
   }
-  .prompt q{font-style:normal;color:var(--ink);}
+  .prompt q{quotes:"「" "」";color:var(--ink);}
+  .prompt .sep{color:#c3c6bf;}
 
-  /* ---------- 效果 ---------- */
-  .effects{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;}
-  .ecard{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:22px;box-shadow:var(--shadow);transition:.22s;
+  /* ---------- 作品 ---------- */
+  .works{display:grid;gap:14px;}
+  .work{
+    background:var(--surface);border:1px solid var(--line);
+    border-radius:var(--radius);padding:22px 24px;
   }
-  .ecard:hover{box-shadow:var(--shadow-hover);}
-  .ecard .eh{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
-  .ecard .eh .en{
-    flex:0 0 auto;width:38px;height:38px;border-radius:10px;
-    display:grid;place-items:center;font-size:18px;background:var(--accent-soft);
+  .work-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;}
+  .work h3{
+    margin:0 0 4px;font-size:16.5px;font-weight:650;
+    display:flex;align-items:center;flex-wrap:wrap;gap:8px;
   }
-  .ecard h5{margin:0;font-size:15.5px;font-weight:640;}
-  .ecard p{margin:0 0 12px;font-size:14.5px;color:var(--ink-soft);}
-  .metric{
-    display:inline-flex;align-items:baseline;gap:7px;
-    background:var(--warm-soft);border-radius:8px;padding:8px 13px;margin-top:2px;
+  .work .sub{
+    font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.05em;
+    color:var(--ink-mute);border:1px solid var(--line);
+    border-radius:4px;padding:1px 6px;
   }
-  .metric b{font-size:19px;font-weight:680;color:var(--warm);letter-spacing:-.01em;}
-  .metric span{font-size:12.5px;color:var(--ink-mute);}
+  .work p{margin:0;max-width:560px;font-size:13.5px;line-height:1.75;color:var(--ink-soft);}
+  .btn{
+    flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;
+    background:var(--accent);color:#fff;text-decoration:none;white-space:nowrap;
+    font-size:12.5px;font-weight:600;padding:7px 14px;border-radius:999px;
+    transition:background .15s ease;
+  }
+  .btn:hover{background:var(--accent-ink);}
+  .btn.ghost{background:transparent;color:var(--accent-ink);border:1px solid #cfe0d7;}
+  .btn.ghost:hover{background:var(--accent-soft);}
 
-  /* ---------- 嵌入式作品演示 ---------- */
-  .demo-hero{
-    grid-column:1 / -1;
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:26px 24px;box-shadow:var(--shadow);
+  .demo{margin-top:16px;padding-top:14px;border-top:1px solid var(--line-soft);}
+  .demo summary{
+    display:inline-flex;align-items:center;gap:6px;
+    cursor:pointer;list-style:none;
+    font-size:12.5px;color:var(--ink-soft);
   }
-  .demo-hero .dh-head{display:flex;align-items:center;gap:12px;margin-bottom:4px;flex-wrap:wrap;}
-  .demo-hero .dh-head .en{
-    flex:0 0 auto;width:42px;height:42px;border-radius:10px;
-    display:grid;place-items:center;font-size:20px;background:var(--accent-soft);
+  .demo summary::-webkit-details-marker{display:none;}
+  .demo summary::before{
+    content:"＋";font-family:var(--mono);font-size:13px;color:var(--accent);
   }
-  .demo-hero h5{margin:0;font-size:17px;font-weight:650;}
-  .demo-hero .desc{color:var(--ink-soft);font-size:14.5px;margin:8px 0 18px;}
-  .demo-frame{width:100%;border:1px solid var(--line);border-radius:var(--radius-sm);background:#fff;overflow:hidden;}
-  .demo-frame iframe{display:block;width:100%;height:780px;border:0;}
-  .demo-link{margin-top:12px;font-size:13.5px;color:var(--ink-mute);}
-  .demo-link a{color:var(--accent-ink);font-weight:600;text-decoration:none;}
-  .demo-link a:hover{text-decoration:underline;}
-
-  /* ---------- 时间线 ---------- */
-  .timeline{position:relative;margin-top:6px;padding-left:26px;}
-  .timeline::before{
-    content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;
-    background:linear-gradient(var(--line),var(--line-soft));
+  .demo[open] summary::before{content:"－";}
+  .demo summary:hover{color:var(--accent-ink);}
+  .demo .hint{font-family:var(--mono);font-size:10px;color:var(--ink-mute);}
+  .demo-frame{
+    margin-top:12px;background:#fff;
+    border:1px solid var(--line);border-radius:8px;overflow:hidden;
   }
-  .tl-item{position:relative;padding:0 0 22px 4px;}
-  .tl-item:last-child{padding-bottom:0;}
-  .tl-item::before{
-    content:"";position:absolute;left:-26px;top:7px;width:10px;height:10px;
-    border-radius:50%;background:var(--surface);border:2.5px solid var(--accent);
-  }
-  .tl-date{font-family:var(--mono);font-size:12.5px;color:var(--ink-mute);letter-spacing:.02em;}
-  .tl-item h5{margin:2px 0 3px;font-size:15px;font-weight:620;}
-  .tl-item p{margin:0;font-size:14px;color:var(--ink-soft);}
+  .demo-frame iframe{display:block;width:100%;height:640px;border:0;}
 
   /* ---------- 结语 ---------- */
-  .closing{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:34px 32px;margin-top:14px;box-shadow:var(--shadow);
-  }
-  .closing h3{margin:0 0 12px;font-size:19px;font-weight:650;}
-  .closing p{margin:0 0 12px;font-size:15.5px;color:var(--ink-soft);}
-  .closing p:last-child{margin-bottom:0;}
-  .closing .sign{margin-top:18px;font-size:14px;color:var(--ink-mute);}
-
-  /* ---------- 访客留言 ---------- */
-  .gb-wrap{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:26px;align-items:start;}
-  .gb-form{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:22px;box-shadow:var(--shadow);
-  }
-  .gb-row{margin-bottom:14px;}
-  .gb-row label{
-    display:block;font-size:13px;font-weight:600;letter-spacing:.03em;
-    color:var(--ink-mute);margin-bottom:6px;
-  }
-  .gb-row input,.gb-row textarea{
-    width:100%;font:inherit;font-size:14.5px;color:var(--ink);
-    background:var(--surface-2);border:1px solid var(--line);
-    border-radius:var(--radius-sm);padding:10px 13px;transition:.18s;resize:vertical;
-  }
-  .gb-row input:focus,.gb-row textarea:focus{
-    outline:none;border-color:var(--accent);background:var(--surface);
-    box-shadow:0 0 0 3px var(--accent-soft);
-  }
-  .gb-row input::placeholder,.gb-row textarea::placeholder{color:#a9b0b6;}
-  .gb-foot{display:flex;align-items:center;gap:14px;margin-top:4px;}
-  .gb-hint{font-size:12.5px;color:var(--ink-mute);font-family:var(--mono);}
-  .gb-foot button{
-    margin-left:auto;font:inherit;font-size:14.5px;font-weight:600;cursor:pointer;
-    color:#fff;background:var(--accent);border:1px solid var(--accent);
-    border-radius:999px;padding:9px 22px;transition:.18s;
-  }
-  .gb-foot button:hover:not(:disabled){background:var(--accent-ink);border-color:var(--accent-ink);}
-  .gb-foot button:disabled{opacity:.6;cursor:not-allowed;}
-  .gb-status{
-    margin-top:0;font-size:13.5px;border-radius:var(--radius-sm);
-    padding:0 13px;max-height:0;overflow:hidden;transition:.2s;
-  }
-  .gb-status.show{margin-top:12px;padding:10px 13px;max-height:120px;}
-  .gb-status.ok{background:var(--accent-soft);color:var(--accent-ink);}
-  .gb-status.err{background:#fdeceb;color:#a3352c;}
-
-  .gb-list-head{display:flex;align-items:baseline;gap:10px;margin:0 0 14px;flex-wrap:wrap;}
-  .gb-list-head h3{margin:0;font-size:16px;font-weight:640;}
-  .gb-total{font-size:13px;color:var(--ink-mute);font-family:var(--mono);}
-  .gb-list{display:grid;gap:11px;max-height:540px;overflow-y:auto;padding-right:4px;}
-  .gb-item{
-    display:flex;gap:12px;background:var(--surface);
-    border:1px solid var(--line);border-radius:var(--radius-sm);
-    padding:13px 15px;box-shadow:var(--shadow);
-  }
-  .gb-avatar{
-    flex:0 0 auto;width:34px;height:34px;border-radius:50%;
-    display:grid;place-items:center;font-size:14px;font-weight:640;
-    background:var(--accent-soft);color:var(--accent-ink);
-  }
-  .gb-item-body{min-width:0;flex:1 1 auto;}
-  .gb-item-top{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:3px;}
-  .gb-item-top b{font-size:14.5px;font-weight:640;color:var(--ink);}
-  .gb-item-top time{font-size:12px;color:var(--ink-mute);font-family:var(--mono);}
-  .gb-item-body p{margin:0;font-size:14.5px;color:var(--ink-soft);word-break:break-word;white-space:pre-wrap;}
-  .gb-empty{
-    background:var(--surface);border:1px dashed var(--line);border-radius:var(--radius-sm);
-    padding:26px 20px;text-align:center;font-size:14px;color:var(--ink-mute);
-  }
-  .gb-empty.warn{border-style:solid;border-color:#f0d5d2;background:#fdf6f5;color:#a3352c;}
-
-  footer{
-    margin-top:56px;padding:26px 0 40px;border-top:1px solid var(--line);
-    color:var(--ink-mute);font-size:13.5px;text-align:center;
-  }
-  footer .fwrap{max-width:1080px;margin:0 auto;padding:0 24px;}
-
-  @media(max-width:640px){
-    .wrap{padding:0 18px;}
-    .topbar-inner{padding:10px 18px;}
-    .hero{padding:48px 0 34px;}
-    .card-head{padding:16px 16px;gap:12px;}
-    .card-body-inner{padding:16px 16px 20px;}
-    .icon{width:40px;height:40px;font-size:19px;}
-    section{padding:44px 0 8px;}
-    .closing{padding:24px 20px;}
-    .gb-wrap{grid-template-columns:1fr;gap:20px;}
-    .gb-form{padding:18px;}
+  .closing-body{border-left:2px solid var(--accent);padding-left:22px;}
+  .closing-body p{margin:0 0 14px;font-size:15px;line-height:1.95;color:var(--ink-soft);}
+  .closing-body p:last-of-type{margin-bottom:0;}
+  .closing-body b{color:var(--ink);font-weight:600;}
+  .sign{
+    margin-top:24px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.02em;color:var(--ink-mute);
   }
 
-  @media(max-width:860px){
-    .gb-wrap{grid-template-columns:1fr;gap:20px;}
+  /* ---------- 页脚 ---------- */
+  .footer{border-top:1px solid var(--line);}
+  .footer-inner{
+    display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+    padding-top:22px;padding-bottom:34px;
+    font-size:11.5px;color:var(--ink-mute);
+  }
+  .footer a{color:var(--ink-mute);text-decoration:none;}
+  .footer a:hover{color:var(--accent-ink);}
+
+  /* ---------- 移动端顶栏 ---------- */
+  .mobile-bar{display:none;}
+
+  @media (max-width:920px){
+    .sidebar{display:none;}
+    .page{margin-left:0;}
+    .mobile-bar{
+      display:block;position:sticky;top:0;z-index:60;
+      background:rgba(251,250,247,.94);
+      border-bottom:1px solid var(--line);
+      backdrop-filter:blur(12px);
+    }
+    .m-top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 20px 7px;}
+    .m-brand{text-decoration:none;color:var(--ink);font-size:14px;font-weight:650;letter-spacing:.01em;}
+    .m-brand .dot{color:var(--accent);}
+    .m-year{font-family:var(--mono);font-size:9.5px;letter-spacing:.05em;color:var(--ink-mute);}
+    .m-nav{display:flex;gap:6px;overflow-x:auto;padding:0 20px 10px;scrollbar-width:none;}
+    .m-nav::-webkit-scrollbar{display:none;}
+    .m-nav a{
+      flex:0 0 auto;font-size:11.5px;color:var(--ink-soft);text-decoration:none;
+      padding:3px 9px;border:1px solid var(--line);border-radius:999px;background:var(--surface);
+    }
+    .m-nav a.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+    .container{padding:0 24px;}
+    .hero{padding:54px 0 40px;}
+    .section{padding:44px 0 38px;scroll-margin-top:104px;}
+    .entry-body{grid-template-columns:1fr;gap:18px;}
+    .demo-frame iframe{height:560px;}
   }
 
-  /* ---------- 作品入口：内联按钮 + 右下角固定按钮 ---------- */
-  .btn-demo{
-    display:inline-flex;align-items:center;gap:8px;
-    background:var(--accent);color:#fff;text-decoration:none;
-    font-size:14.5px;font-weight:600;padding:10px 22px;border-radius:999px;
-    transition:.18s;
+  @media (max-width:640px){
+    .container{padding:0 18px;}
+    .hero{padding:42px 0 34px;}
+    .hero h1{font-size:clamp(27px,7.4vw,34px);}
+    .lede{font-size:14.5px;}
+    .meta{gap:6px 14px;margin-top:20px;}
+    .entry{padding:17px 16px;}
+    .entry-head{gap:11px;}
+    .entry-icon{width:32px;height:32px;font-size:15px;}
+    .work{padding:18px 16px;}
+    .work-head{flex-direction:column;gap:12px;}
+    .closing-body{padding-left:16px;}
+    .demo-frame iframe{height:520px;}
   }
-  .btn-demo:hover{background:var(--accent-ink);}
-  .float-entry{
-    position:fixed;right:22px;bottom:22px;z-index:60;
-    display:inline-flex;align-items:center;gap:7px;
-    background:var(--accent);color:#fff;text-decoration:none;
-    font-size:14px;font-weight:600;padding:11px 18px;border-radius:999px;
-    box-shadow:0 8px 22px rgba(47,111,94,.28);transition:.18s;
-  }
-  .float-entry:hover{background:var(--accent-ink);transform:translateY(-1px);}
-  @media(max-width:640px){
-    .float-entry{right:14px;bottom:14px;padding:9px 14px;font-size:13px;}
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    *,*::before,*::after{transition-duration:.01ms !important;animation-duration:.01ms !important;}
   }
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-inner">
-    <a class="brand" href="#top">汪子恒 <span class="dot">·</span> Agent 使用记录</a>
-    <nav class="nav">
-      <a href="#agents">Agent 列表</a>
-      <a href="#effects">效果展示</a>
-      <a href="#works">作品演示</a>
-      <a href="#timeline">时间线</a>
-      <a href="#about">写在最后</a>
-    </nav>
+<!-- ========== 左侧导航 ========== -->
+<aside class="sidebar">
+  <a class="brand" href="#intro">
+    <span class="brand-mark">汪</span>
+    <span class="brand-text">
+      <b>汪子恒</b>
+      <span>AI Agent Log</span>
+    </span>
+  </a>
+
+  <div class="nav-title">目录 · Index</div>
+  <nav class="side-nav" aria-label="页面目录">
+    <a href="#intro"><span class="nav-date">2026 秋</span><span class="nav-label">简介</span></a>
+    <a href="#works"><span class="nav-date">2026.10 下旬</span><span class="nav-label">作品</span></a>
+    <a href="#oct-late"><span class="nav-date">2026.10 中下旬</span><span class="nav-label">走向课外</span></a>
+    <a href="#oct-mid"><span class="nav-date">2026.10 中旬</span><span class="nav-label">补基础</span></a>
+    <a href="#oct-early"><span class="nav-date">2026.10 上旬</span><span class="nav-label">作业季</span></a>
+    <a href="#sep-end"><span class="nav-date">2026.09 底</span><span class="nav-label">第一次 PPT</span></a>
+    <a href="#sep-late"><span class="nav-date">2026.09 下旬</span><span class="nav-label">收拾电脑</span></a>
+    <a href="#closing"><span class="nav-date">现在</span><span class="nav-label">写在最后</span></a>
+  </nav>
+
+  <div class="side-foot">
+    <span>© 2026 汪子恒</span>
+    <a href="#intro">回到顶部 ↑</a>
   </div>
-</div>
+</aside>
 
-<div class="wrap" id="top">
+<!-- ========== 移动端顶栏 ========== -->
+<header class="mobile-bar">
+  <div class="m-top">
+    <a class="m-brand" href="#intro">汪子恒 <span class="dot">·</span> Agent 记录</a>
+    <span class="m-year">2026 秋</span>
+  </div>
+  <nav class="m-nav" aria-label="页面目录">
+    <a href="#intro">简介</a>
+    <a href="#works">作品</a>
+    <a href="#oct-late">10 中下旬</a>
+    <a href="#oct-mid">10 中旬</a>
+    <a href="#oct-early">10 上旬</a>
+    <a href="#sep-end">09 底</a>
+    <a href="#sep-late">09 下旬</a>
+    <a href="#closing">结语</a>
+  </nav>
+</header>
 
-  <!-- ========== HERO ========== -->
-  <header class="hero">
-    <span class="eyebrow">个人记录 · 2026 秋季学期</span>
-    <h1>我用过的 AI Agent，<span class="thin">和它们帮我做完的事</span></h1>
-    <p class="lede">
-      我是汪子恒，一名大一新生。这份记录整理了从九月入学到现在，我在日常学习和生活里
-      真正用过的每一个 Agent —— 它们分别被用来做什么、最后拿出来的是什么结果。
-      没有包装，就是一份朴素的使用台账。
-    </p>
-    <div class="idcard">
-      <span class="chip"><b>身份</b> 大一在读</span>
-      <span class="chip"><b>专业方向</b> 计算机相关</span>
-      <span class="chip"><b>主要场景</b> 课程作业 · 校园活动 · 技能探索</span>
-      <span class="chip"><b>记录跨度</b> 2026.09 — 2026.10</span>
-    </div>
+<div class="page">
+  <div class="container">
 
-    <div class="stats">
-      <div class="stat"><div class="num">7</div><div class="lbl">使用过的 Agent</div></div>
-      <div class="stat"><div class="num">20+</div><div class="lbl">实际任务次数</div></div>
-      <div class="stat"><div class="num">3</div><div class="lbl">覆盖场景类型</div></div>
-      <div class="stat"><div class="num">5</div><div class="lbl">产出的可用文件</div></div>
-    </div>
-  </header>
+    <!-- ========== 简介 ========== -->
+    <header class="hero" id="intro">
+      <div class="eyebrow">Personal Log · 2026 秋</div>
+      <h1>我用过的 AI Agent，<span class="thin">和它们帮我做完的事</span></h1>
+      <p class="lede">
+        我是汪子恒，大一在读。这里按时间倒序，记录从九月入学到现在，我在学习和生活里真正用过的 Agent——
+        它们分别被用来做什么，最后拿到了什么结果。没有包装，就是一份朴素的使用台账。
+      </p>
+      <div class="meta">
+        <span class="m-item">2026.09 — 2026.10</span>
+        <span class="m-item"><b>7</b> 个 Agent</span>
+        <span class="m-item"><b>20+</b> 次任务</span>
+        <span class="m-item"><b>4</b> 类场景</span>
+        <span class="m-item"><b>5</b> 个可用文件</span>
+      </div>
+    </header>
 
-  <!-- ========== 一、AGENT 列表 + 用途 ========== -->
-  <section id="agents">
-    <div class="sec-head">
-      <h2><span class="idx">01</span> Agent 列表与用途说明</h2>
-      <p>点击任意一张卡片展开，可以看到这个 Agent 具体被用来做什么、我当时是怎么下指令的。分类标签对应它主要服务的场景。</p>
-    </div>
+    <!-- ========== 2026.10 下旬 · 作品 ========== -->
+    <section class="section" id="works">
+      <div class="sec-head">
+        <div class="sec-kicker"><span class="sec-date">2026.10 下旬</span></div>
+        <h2>把学到的，做成能打开试的东西</h2>
+        <p>从看懂代码，到把网络和训练过程放进浏览器里跑一遍。</p>
+      </div>
 
-    <div class="filters">
-      <button class="active" data-filter="all">全部</button>
-      <button data-filter="study">课程学习</button>
-      <button data-filter="campus">校园生活</button>
-      <button data-filter="skill">技能探索</button>
-      <button data-filter="system">设备与效率</button>
-    </div>
-
-    <div class="agents" id="agentList">
-
-      <!-- 1. Python 作业助手 -->
-      <article class="card" data-cat="study">
-        <div class="card-head">
-          <div class="icon">🐍</div>
-          <div class="card-title">
-            <h3>代码作业助手 <span class="tag study">课程学习</span></h3>
-            <p class="role">完成课程作业、逐行讲解看不懂的代码</p>
+      <div class="works">
+        <article class="work">
+          <div class="work-head">
+            <div>
+              <h3>XOR 多层感知机 <span class="sub">PyTorch · TensorFlow</span></h3>
+              <p>两个框架各搭一个 2-2-1 的 sigmoid 网络来拟合 XOR（异或），在云端真实训练后再给出预测。</p>
+            </div>
+            <a class="btn ghost" href="https://xor-mlp-demo.app.workbuddy.host/?sharecode=UQKIE5B4J3" target="_blank" rel="noopener">打开演示 ↗</a>
           </div>
-          <div class="chev">▾</div>
-        </div>
-        <div class="card-body"><div class="card-body-inner">
-          <div class="grid2">
-            <div class="block">
-              <h4>用来做什么</h4>
+          <details class="demo">
+            <summary>在页面内查看演示 <span class="hint">加载需要几秒</span></summary>
+            <div class="demo-frame">
+              <iframe src="https://xor-mlp-demo.app.workbuddy.host/?sharecode=UQKIE5B4J3"
+                      title="XOR 双框架在线演示" loading="lazy"></iframe>
+            </div>
+          </details>
+        </article>
+
+        <article class="work">
+          <div class="work-head">
+            <div>
+              <h3>三层塔 <span class="sub">Galgame · 多层感知机</span></h3>
+              <p>
+                塔里住着三个角色：一层阿零只放正数过去（ReLU），二层西格把所有数压进 0 到 1（Sigmoid），
+                三层塔恩只看最后那个数（tanh）。游戏里跑的是一个真的 2-3-2-1 网络，观测窗里的每个数字都来自当前权重；
+                三个结局对应三种训练的失败方式。大约 5 分钟。
+              </p>
+            </div>
+            <a class="btn" href="galgame.html">▶ 进入三层塔</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== 2026.10 中下旬 ========== -->
+    <section class="section" id="oct-late">
+      <div class="sec-head">
+        <div class="sec-kicker"><span class="sec-date">2026.10 中下旬</span></div>
+        <h2>从课内走向课外</h2>
+        <p>开始用它准备校新闻中心的面试、找教材资源——用途从「交差」变成了「自己想做的事」。</p>
+      </div>
+
+      <div class="entries">
+        <article class="entry">
+          <div class="entry-head">
+            <div class="entry-icon">🎤</div>
+            <div class="entry-title">
+              <h3>面试准备助手 <span class="tag">校园生活</span></h3>
+              <p class="role">为校新闻中心面试准备回答材料</p>
+            </div>
+          </div>
+          <div class="entry-body">
+            <div class="entry-col">
+              <h4>做了什么</h4>
               <ul>
-                <li>把课程发下来的 <b>作业压缩包（作业二.zip）</b> 解压后，按题目要求补全里面的 Python 代码</li>
-                <li>对已经写出来但看不懂的代码<b>逐行解释</b>，比如 <code>prime_set = set(primes)</code> 为什么要转成集合</li>
-                <li>解释基础但容易混的语法点：<code>strip()</code> 到底去掉什么、<code>eval()</code> 是干什么用的</li>
-                <li>把课本或老师图里的代码<b>照着复现</b>成可运行文件</li>
+                <li>针对校新闻中心「海报创作 + 资料整理」的岗位，梳理自己的实际情况</li>
+                <li>想清楚「有软件基础、但还没有成型作品」该怎么答</li>
+                <li>准备在学长学姐的面谈里，展示「能干活、好带」</li>
               </ul>
             </div>
-            <div class="block warm">
-              <h4>得到什么</h4>
+            <div class="entry-col result">
+              <h4>结果</h4>
+              <ul>
+                <li>理清重点：<b>筛的是能不能干活，不是有没有作品集</b></li>
+                <li>拿到一套贴合真实情况的回答思路，不是套话</li>
+                <li>面试时心里有底，表达更有条理</li>
+              </ul>
+            </div>
+          </div>
+          <div class="prompt">
+            <span class="k">当时下的指令</span>
+            <q>我要参加校新闻中心的面试，负责海报创作和资料整理，帮我准备一些回答材料</q>
+          </div>
+        </article>
+
+        <article class="entry">
+          <div class="entry-head">
+            <div class="entry-icon">🔍</div>
+            <div class="entry-title">
+              <h3>资源检索助手 <span class="tag">技能探索</span></h3>
+              <p class="role">找教材配套资源、找公开课件</p>
+            </div>
+          </div>
+          <div class="entry-body">
+            <div class="entry-col">
+              <h4>做了什么</h4>
+              <ul>
+                <li>拍照上传一本教材封面，让它帮忙找<b>公开的配套讲义和课件</b></li>
+                <li>不满足于随手搜到的链接，核实来源是否官方、是否真的能下载</li>
+                <li>把找到的资源整理成一个可以点开就跳转的索引页</li>
+              </ul>
+            </div>
+            <div class="entry-col result">
+              <h4>结果</h4>
+              <ul>
+                <li>找到作者团队官方免费开放的配套课件：<b>约 1500 页、50 节课</b></li>
+                <li>整理出一份本地 HTML 索引页，放在桌面随时点开</li>
+                <li>学会了「先找官方渠道」这个检索习惯</li>
+              </ul>
+            </div>
+          </div>
+          <div class="prompt">
+            <span class="k">当时下的指令</span>
+            <q>在 github 上找到这本书的 PDF 版，文件放在桌面上</q>
+            <span class="sep" aria-hidden="true">·</span>
+            <q>找找这本书公开的教学课件</q>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== 2026.10 中旬 ========== -->
+    <section class="section" id="oct-mid">
+      <div class="sec-head">
+        <div class="sec-kicker"><span class="sec-date">2026.10 中旬</span></div>
+        <h2>边交作业，边补基础</h2>
+        <p>把课堂上含糊过去的概念，一个个问清楚。</p>
+      </div>
+
+      <div class="entries">
+        <article class="entry">
+          <div class="entry-head">
+            <div class="entry-icon">💡</div>
+            <div class="entry-title">
+              <h3>编程答疑助手 <span class="tag">课程学习</span></h3>
+              <p class="role">课后补概念、解经典例题</p>
+            </div>
+          </div>
+          <div class="entry-body">
+            <div class="entry-col">
+              <h4>做了什么</h4>
+              <ul>
+                <li>问基础概念：Python 里怎么实现矩阵转置，要几种不同写法并对比</li>
+                <li>解经典例题：用 for 循环解「百钱百鸡」，说清变量设计和运行流程</li>
+                <li>搞懂小技巧：列表分块打印 <code>for n in range(0,len(lst),5)</code> 是怎么工作的</li>
+              </ul>
+            </div>
+            <div class="entry-col result">
+              <h4>结果</h4>
+              <ul>
+                <li>一次拿到 <b>3 种</b>矩阵转置写法：<code>zip(*m)</code>、列表推导、NumPy</li>
+                <li>百钱百鸡从暴力枚举 <b>20 万次</b> 优化到数学推导 <b>O(1)</b></li>
+                <li>课堂上没听懂的细节，课后自己补上了</li>
+              </ul>
+            </div>
+          </div>
+          <div class="prompt">
+            <span class="k">当时下的指令</span>
+            <q>python 中怎么实现矩阵的转置</q>
+            <span class="sep" aria-hidden="true">·</span>
+            <q>python for 循环解决百钱百鸡问题</q>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ========== 2026.10 上旬 ========== -->
+    <section class="section" id="oct-early">
+      <div class="sec-head">
+        <div class="sec-kicker"><span class="sec-date">2026.10 上旬</span></div>
+        <h2>进入作业季</h2>
+        <p>作业二、文件检查、经典例题集中出现，把「写完」和「写对」分开处理。</p>
+      </div>
+
+      <div class="entries">
+        <article class="entry">
+          <div class="entry-head">
+            <div class="entry-icon">🐍</div>
+            <div class="entry-title">
+              <h3>代码作业助手 <span class="tag">课程学习</span></h3>
+              <p class="role">完成课程作业、逐行讲解看不懂的代码</p>
+            </div>
+          </div>
+          <div class="entry-body">
+            <div class="entry-col">
+              <h4>做了什么</h4>
+              <ul>
+                <li>把课程发下来的「作业二.zip」解压后，按题目要求补全 Python 代码</li>
+                <li>对看不懂的代码<b>逐行解释</b>，比如 <code>prime_set = set(primes)</code> 为什么要转成集合</li>
+                <li>讲清 <code>strip()</code>、<code>eval()</code> 这些基础但容易混的语法点</li>
+              </ul>
+            </div>
+            <div class="entry-col result">
+              <h4>结果</h4>
               <ul>
                 <li>作业从「卡住」到能跑通、能交上去</li>
                 <li>不只是拿到答案，还看懂了为什么这么写</li>
@@ -460,38 +599,34 @@
           </div>
           <div class="prompt">
             <span class="k">当时下的指令</span>
-            <q>@作业二.zip 完成压缩包中编写代码的任务</q> &nbsp;·&nbsp;
+            <q>@作业二.zip 完成压缩包中编写代码的任务</q>
+            <span class="sep" aria-hidden="true">·</span>
             <q>4_10.py 中 strip() 的作用</q>
           </div>
-        </div></div>
-      </article>
+        </article>
 
-      <!-- 2. 代码审查 / 作业检查 -->
-      <article class="card" data-cat="study">
-        <div class="card-head">
-          <div class="icon">✅</div>
-          <div class="card-title">
-            <h3>作业自检助手 <span class="tag study">课程学习</span></h3>
-            <p class="role">拿「要求文件」逐条对照检查自己的作业</p>
+        <article class="entry">
+          <div class="entry-head">
+            <div class="entry-icon">✅</div>
+            <div class="entry-title">
+              <h3>作业自检助手 <span class="tag">课程学习</span></h3>
+              <p class="role">用要求文件逐条对照检查自己的作业</p>
+            </div>
           </div>
-          <div class="chev">▾</div>
-        </div>
-        <div class="card-body"><div class="card-body-inner">
-          <div class="grid2">
-            <div class="block">
-              <h4>用来做什么</h4>
+          <div class="entry-body">
+            <div class="entry-col">
+              <h4>做了什么</h4>
               <ul>
-                <li>把<b>作业要求（文件二）</b>和<b>我的提交（文件一）</b>一起交给它，让它逐条比对</li>
+                <li>把「要求文件」和「我的提交」一起交给它，让它逐条比对</li>
                 <li>输出一份检查报告：符合 / 部分符合 / 不符合，并标注具体行号</li>
-                <li>改完之后再让它复查一遍，确认之前的扣分点是否真的修好了</li>
-                <li>比较两个压缩包的内容，确认哪个版本才满足要求</li>
+                <li>改完之后再复查一遍，确认之前的扣分点是否真的修好了</li>
               </ul>
             </div>
-            <div class="block warm">
-              <h4>得到什么</h4>
+            <div class="entry-col result">
+              <h4>结果</h4>
               <ul>
-                <li>提交前就发现了一处量纲错误（<code>20 % V</code> 应为 <code>20000 / V</code>）</li>
-                <li>用 4 组测试数据逐一验算，输出与手工计算完全吻合</li>
+                <li>提交前发现一处量纲错误：<code>20 % V</code> 应为 <code>20000 / V</code></li>
+                <li>用 <b>4 组</b>测试数据逐一验算，输出与手工计算完全吻合</li>
                 <li>养成「交之前先自检一遍」的习惯</li>
               </ul>
             </div>
@@ -500,71 +635,41 @@
             <span class="k">当时下的指令</span>
             <q>以「文件二」中的要求作为验收标准，逐条检查「文件一」的实现是否合规</q>
           </div>
-        </div></div>
-      </article>
+        </article>
+      </div>
+    </section>
 
-      <!-- 3. 学习答疑 -->
-      <article class="card" data-cat="study">
-        <div class="card-head">
-          <div class="icon">💡</div>
-          <div class="card-title">
-            <h3>编程答疑助手 <span class="tag study">课程学习</span></h3>
-            <p class="role">课后补概念、解经典例题</p>
-          </div>
-          <div class="chev">▾</div>
-        </div>
-        <div class="card-body"><div class="card-body-inner">
-          <div class="grid2">
-            <div class="block">
-              <h4>用来做什么</h4>
-              <ul>
-                <li>问基础概念：<b>Python 里怎么实现矩阵转置</b>，要几种不同写法并对比</li>
-                <li>解经典例题：用 <b>for 循环解「百钱百鸡」</b>，要求说清变量设计和运行流程</li>
-                <li>搞懂小技巧：列表分块打印 <code>for n in range(0,len(lst),5)</code> 是怎么工作的</li>
-              </ul>
-            </div>
-            <div class="block warm">
-              <h4>得到什么</h4>
-              <ul>
-                <li>矩阵转置一次拿到 <b>3 种写法</b>（<code>zip(*m)</code>、列表推导、NumPy），知道各自适用场景</li>
-                <li>百钱百鸡从「暴力枚举 20 万次」优化到<b>数学推导 O(1)</b> 求解，理解了循环剪枝</li>
-                <li>课堂上没听懂的细节，课后自己补上了</li>
-              </ul>
-            </div>
-          </div>
-          <div class="prompt">
-            <span class="k">当时下的指令</span>
-            <q>python 中怎么实现矩阵的转置</q> &nbsp;·&nbsp;
-            <q>python for 循环解决百钱百鸡问题</q>
-          </div>
-        </div></div>
-      </article>
+    <!-- ========== 2026.09 底 ========== -->
+    <section class="section" id="sep-end">
+      <div class="sec-head">
+        <div class="sec-kicker"><span class="sec-date">2026.09 底</span></div>
+        <h2>第一次做汇报 PPT</h2>
+        <p>按老师给的排版要求，联网找资料，做出能交的 PPTX。</p>
+      </div>
 
-      <!-- 4. 演示文稿 -->
-      <article class="card" data-cat="study">
-        <div class="card-head">
-          <div class="icon">📊</div>
-          <div class="card-title">
-            <h3>演示文稿助手 <span class="tag study">课程学习</span></h3>
-            <p class="role">做小组汇报 PPT、把 PDF 转成可编辑幻灯片</p>
+      <div class="entries">
+        <article class="entry">
+          <div class="entry-head">
+            <div class="entry-icon">📊</div>
+            <div class="entry-title">
+              <h3>演示文稿助手 <span class="tag">课程学习</span></h3>
+              <p class="role">做小组汇报 PPT、把 PDF 转成可编辑幻灯片</p>
+            </div>
           </div>
-          <div class="chev">▾</div>
-        </div>
-        <div class="card-body"><div class="card-body-inner">
-          <div class="grid2">
-            <div class="block">
-              <h4>用来做什么</h4>
+          <div class="entry-body">
+            <div class="entry-col">
+              <h4>做了什么</h4>
               <ul>
-                <li>按给定的排版要求，联网搜集一个地方的资料并做成 <b>PPTX</b></li>
-                <li>给已经做好的 PPT，在介绍页里补上<b>真实的实景照片</b>，而不是随便找的素材图</li>
-                <li>把一份<b>样张 PDF 转成可编辑的 PPT</b>，方便继续改</li>
+                <li>按给定的排版要求，联网搜集资料并做成 <b>PPTX</b></li>
+                <li>给已经做好的 PPT 补上<b>真实的实景照片</b>，而不是随便找的素材图</li>
+                <li>把一份样张 PDF 转成可编辑的 PPT，方便继续改</li>
               </ul>
             </div>
-            <div class="block warm">
-              <h4>得到什么</h4>
+            <div class="entry-col result">
+              <h4>结果</h4>
               <ul>
-                <li>一份完整的汇报 PPT，<b>7 张配图全部可溯源</b>（政府官网、央广网等公开页面）</li>
-                <li>配图是逐张核对页面文字说明确认的，没有凭文件名猜</li>
+                <li><b>7 张</b>配图全部可溯源到政府官网、央广网等公开页面</li>
+                <li>逐张核对页面文字说明确认，没有凭文件名猜</li>
                 <li>省下了大量「找图 + 排版」的时间</li>
               </ul>
             </div>
@@ -573,106 +678,40 @@
             <span class="k">当时下的指令</span>
             <q>联网搜索江苏省连云港市灌南县的相关资料并以此制作符合图片要求的 pptx 文件</q>
           </div>
-        </div></div>
-      </article>
+        </article>
+      </div>
+    </section>
 
-      <!-- 5. 校园面试准备 -->
-      <article class="card" data-cat="campus">
-        <div class="card-head">
-          <div class="icon">🎤</div>
-          <div class="card-title">
-            <h3>面试准备助手 <span class="tag campus">校园生活</span></h3>
-            <p class="role">为校新闻中心面试准备回答材料</p>
-          </div>
-          <div class="chev">▾</div>
-        </div>
-        <div class="card-body"><div class="card-body-inner">
-          <div class="grid2">
-            <div class="block">
-              <h4>用来做什么</h4>
-              <ul>
-                <li>准备参加<b>校新闻中心面试</b>，岗位负责海报创作和资料整理</li>
-                <li>把自己的实际情况说清楚（有软件基础、但还没有成型作品），让它帮忙想怎么答</li>
-                <li>针对「学长学姐面谈」这种形式，准备怎么展示「能干活、好带」</li>
-              </ul>
-            </div>
-            <div class="block warm">
-              <h4>得到什么</h4>
-              <ul>
-                <li>理清了面试的重点：<b>筛的是能不能干活，不是有没有作品集</b></li>
-                <li>拿到一套贴合自己真实情况的回答思路，不是套话</li>
-                <li>面试时心里有底，表达更有条理</li>
-              </ul>
-            </div>
-          </div>
-          <div class="prompt">
-            <span class="k">当时下的指令</span>
-            <q>我要参加校新闻中心的面试，负责海报创作和资料整理，帮我准备一些回答材料</q>
-          </div>
-        </div></div>
-      </article>
+    <!-- ========== 2026.09 下旬 ========== -->
+    <section class="section" id="sep-late">
+      <div class="sec-head">
+        <div class="sec-kicker"><span class="sec-date">2026.09 下旬</span></div>
+        <h2>先让电脑安静下来</h2>
+        <p>第一件事不是学习，是关掉开机自启动、排查弹窗广告。</p>
+      </div>
 
-      <!-- 6. 技能探索 / 资源检索 -->
-      <article class="card" data-cat="skill">
-        <div class="card-head">
-          <div class="icon">🔍</div>
-          <div class="card-title">
-            <h3>资源检索助手 <span class="tag skill">技能探索</span></h3>
-            <p class="role">找教材配套资源、找公开课件</p>
-          </div>
-          <div class="chev">▾</div>
-        </div>
-        <div class="card-body"><div class="card-body-inner">
-          <div class="grid2">
-            <div class="block">
-              <h4>用来做什么</h4>
-              <ul>
-                <li>拍照上传一本教材封面，让它帮忙找<b>公开的配套讲义和课件</b></li>
-                <li>不满足于随手搜到的链接，要求核实来源是否官方、是否真的能下载</li>
-                <li>把找到的资源整理成一个<b>可以点开就跳转的索引页</b></li>
-              </ul>
-            </div>
-            <div class="block warm">
-              <h4>得到什么</h4>
-              <ul>
-                <li>找到作者团队<b>官方免费开放</b>的配套课件（约 1500 页、50 节课），比找来源不明的 PDF 靠谱</li>
-                <li>整理出一份本地 HTML 索引页，放桌面随时点开</li>
-                <li>学会了「先找官方渠道」这个检索习惯</li>
-              </ul>
+      <div class="entries">
+        <article class="entry">
+          <div class="entry-head">
+            <div class="entry-icon">🛠️</div>
+            <div class="entry-title">
+              <h3>电脑维护助手 <span class="tag">设备与效率</span></h3>
+              <p class="role">排查弹窗广告、整理开机启动项</p>
             </div>
           </div>
-          <div class="prompt">
-            <span class="k">当时下的指令</span>
-            <q>在 github 上找到这本书的 PDF 版，文件放在桌面上</q> &nbsp;·&nbsp;
-            <q>找找这本书公开的教学课件</q>
-          </div>
-        </div></div>
-      </article>
-
-      <!-- 7. 设备与效率 -->
-      <article class="card" data-cat="system">
-        <div class="card-head">
-          <div class="icon">🛠️</div>
-          <div class="card-title">
-            <h3>电脑维护助手 <span class="tag campus">设备与效率</span></h3>
-            <p class="role">排查弹窗广告、整理开机启动项</p>
-          </div>
-          <div class="chev">▾</div>
-        </div>
-        <div class="card-body"><div class="card-body-inner">
-          <div class="grid2">
-            <div class="block">
-              <h4>用来做什么</h4>
+          <div class="entry-body">
+            <div class="entry-col">
+              <h4>做了什么</h4>
               <ul>
-                <li>电脑老是<b>弹广告窗口</b>，让它帮忙查清楚这些弹窗是从哪来的</li>
-                <li>把查到的垃圾程序相关目录<b>整体移到隔离文件夹</b>，而不是直接删掉</li>
+                <li>查清反复出现的<b>弹窗广告</b>到底来自哪些程序</li>
+                <li>把相关目录整体移到隔离文件夹，而不是直接删除</li>
                 <li>处理掉后台的开机自启动项，让开机更清爽</li>
               </ul>
             </div>
-            <div class="block warm">
-              <h4>得到什么</h4>
+            <div class="entry-col result">
+              <h4>结果</h4>
               <ul>
-                <li>定位并隔离了 <b>27 个弹窗相关的数据目录</b>（采用移动而非删除，随时可还原）</li>
+                <li><b>27 个</b>弹窗相关目录被隔离，采用移动而非删除，随时可还原</li>
                 <li>搞清楚了还残留哪些需要管理员权限才能处理的部分</li>
                 <li>电脑安静了不少，也学会了怎么自己排查这类问题</li>
               </ul>
@@ -680,216 +719,104 @@
           </div>
           <div class="prompt">
             <span class="k">当时下的指令</span>
-            <q>我的电脑有广告弹窗，帮我检查来自哪</q> &nbsp;·&nbsp;
+            <q>我的电脑有广告弹窗，帮我检查来自哪</q>
+            <span class="sep" aria-hidden="true">·</span>
             <q>关闭 WorkBuddy 的开机自启动</q>
           </div>
-        </div></div>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- ========== 二、效果展示 ========== -->
-  <section id="effects">
-    <div class="sec-head">
-      <h2><span class="idx">02</span> 效果展示</h2>
-      <p>下面这些，是我用 Agent 之后真正拿到手里的东西 —— 不是「感觉不错」，而是能指出来、能打开看的结果。</p>
-    </div>
-
-    <div class="effects">
-
-      <div class="ecard">
-        <div class="eh"><div class="en">📄</div><h5>交出去的作业，是检查过一遍的</h5></div>
-        <p>提交前先对着要求逐条自检，发现了取模和量纲的两处错误。改完后又复测了一遍，4 组数据输出和手工验算逐位吻合。</p>
-        <div class="metric"><b>4/4</b><span>测试用例与手工结果一致</span></div>
+        </article>
       </div>
+    </section>
 
-      <div class="ecard">
-        <div class="eh"><div class="en">🧑‍💻</div><h5>作业代码不再只求「能跑」</h5></div>
-        <p>百钱百鸡从暴力枚举 20 万次，优化到用数学推导直接求解；矩阵转置学会了 3 种写法，知道什么场合用哪种。</p>
-        <div class="metric"><b>20万 → O(1)</b><span>算法思路的实质提升</span></div>
-      </div>
-
-      <div class="ecard">
-        <div class="eh"><div class="en">🖼️</div><h5>汇报 PPT 配上了真实照片</h5></div>
-        <p>做当地的资料汇报时，补了 7 张实景图，每一张都能溯源到政府官网或央广网等公开页面，不是随便找的素材图。</p>
-        <div class="metric"><b>7 张</b><span>全部可溯源的配图</span></div>
-      </div>
-
-      <div class="ecard">
-        <div class="eh"><div class="en">📚</div><h5>找到教材的官方公开课件</h5></div>
-        <p>没有停在随手搜到的链接上，而是找到了作者团队官方免费开放的配套讲义（50 节课、约 1500 页），并整理成桌面上的索引页。</p>
-        <div class="metric"><b>50 节</b><span>官方开放课程资源</span></div>
-      </div>
-
-      <div class="ecard">
-        <div class="eh"><div class="en">🎯</div><h5>校园面试有了准备思路</h5></div>
-        <p>面试前把校新闻中心的岗位要求和自己情况对齐，想清楚了「没作品集该怎么答」，面试时表达更有条理。</p>
-        <div class="metric"><b>1 套</b><span>贴合自身情况的回答思路</span></div>
-      </div>
-
-      <div class="ecard">
-        <div class="eh"><div class="en">🖥️</div><h5>电脑安静下来了</h5></div>
-        <p>排查出弹窗广告的来源，把 27 个相关目录移进隔离文件夹（可随时还原），理清了剩余的清理项。</p>
-        <div class="metric"><b>27 个</b><span>隔离的弹窗相关目录</span></div>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ========== 三、作品演示 ========== -->
-  <section id="works">
-    <div class="sec-head">
-      <h2><span class="idx">03</span> 作品演示</h2>
-      <p>把一个学习过程真正做出来、能打开试的东西。下面两个：一个是跑在云端的 XOR 多层感知机演示，一个是《三层塔》—— 用 galgame 的形式，在浏览器里真跑一个多层感知机。</p>
-    </div>
-
-    <div class="demo-hero">
-      <div class="dh-head"><div class="en">🧠</div><h5>XOR 多层感知机（PyTorch vs TensorFlow）</h5></div>
-      <p class="desc">
-        用两个框架各搭了一个 2-2-1 的 sigmoid 网络来拟合 XOR（异或）。两个模型在云端各自真实训练后再给出预测。
-      </p>
-      <div class="demo-frame">
-        <iframe src="https://xor-mlp-demo.app.workbuddy.host/?sharecode=UQKIE5B4J3"
-                title="XOR 双框架在线演示" loading="lazy"></iframe>
-      </div>
-      <div class="demo-link">
-        独立打开：<a href="https://xor-mlp-demo.app.workbuddy.host/?sharecode=UQKIE5B4J3" target="_blank" rel="noopener">xor-mlp-demo.app.workbuddy.host</a>
-      </div>
-    </div>
-
-    <div class="demo-hero">
-      <div class="dh-head"><div class="en">🏯</div><h5>三层塔 · 一个用 galgame 讲多层感知机的短篇</h5></div>
-      <p class="desc">
-        塔里住着三个角色：一层阿零只放正数过去（ReLU），二层西格把所有数压进 0 到 1（Sigmoid），三层塔恩只看最后那个数（tanh）。
-        每天傍晚你在塔下说一句话，塔把它一层层往上送，再送下来一个回答。
-      </p>
-      <p class="desc">
-        游戏里跑的是一个真的 2-3-2-1 网络，观测窗里的每个数字都来自当前权重；三个结局对应三种训练的失败方式 ——
-        绕开那个熄掉的房间、一步迈过头、或者学成只会说一句话。大约 5 分钟。
-      </p>
-      <a class="btn-demo" href="galgame.html">▶ 进去看看</a>
-      <span class="demo-link" style="margin-left:12px">也可以直接打开：<a href="galgame.html">galgame.html</a></span>
-    </div>
-  </section>
-
-  <!-- ========== 四、时间线 ========== -->
-  <section id="timeline">
-    <div class="sec-head">
-      <h2><span class="idx">04</span> 使用时间线</h2>
-      <p>按时间顺序看，这些 Agent 是怎么一步步进入我日常的。</p>
-    </div>
-
-    <div class="timeline">
-      <div class="tl-item">
-        <div class="tl-date">2026 / 09 下旬</div>
-        <h5>从「收拾电脑」开始</h5>
-        <p>第一件事不是学习，是关掉开机自启动、排查弹窗广告。</p>
-      </div>
-      <div class="tl-item">
-        <div class="tl-date">2026 / 09 底</div>
-        <h5>第一次做汇报 PPT</h5>
-        <p>按老师给的排版要求，联网找资料做了一份 PPT，后来又补上真实照片。</p>
-      </div>
-      <div class="tl-item">
-        <div class="tl-date">2026 / 10 上旬</div>
-        <h5>进入作业季</h5>
-        <p>开始写代码作业，作业二、文件检查、经典例题都在这段时间密集出现。</p>
-      </div>
-      <div class="tl-item">
-        <div class="tl-date">2026 / 10 中旬</div>
-        <h5>边交作业边补齐基础</h5>
-        <p>把之前含糊过去的概念一个个问清楚：矩阵转置、列表分块、<code>strip()</code>、<code>eval()</code>、百钱百鸡。</p>
-      </div>
-      <div class="tl-item">
-        <div class="tl-date">2026 / 10 中下旬</div>
-        <h5>从课内走向课外</h5>
-        <p>开始用它准备校新闻中心的面试、找教材资源 —— 用途从「交差」变成了「自己想做的事」。</p>
-      </div>
-      <div class="tl-item">
-        <div class="tl-date">现在</div>
-        <h5>整理成这份记录</h5>
+    <!-- ========== 现在 · 写在最后 ========== -->
+    <section class="section" id="closing">
+      <div class="sec-head">
+        <div class="sec-kicker"><span class="sec-date">现在</span></div>
+        <h2>写在最后</h2>
         <p>回头把这些用过的 Agent 和它们做成的结果整理出来，做成这个网站，也算是给自己留个存档。</p>
       </div>
-    </div>
-  </section>
 
-  <!-- ========== 五、写在最后 ========== -->
-  <section id="about">
-    <div class="sec-head">
-      <h2><span class="idx">05</span> 写在最后</h2>
-    </div>
-    <div class="closing">
-      <h3>它们没有替我学习，是帮我把时间花在了该花的地方</h3>
-      <p>
-        刚上大学的时候，我经常在「不知道从哪下手」这件事上耗掉整个晚上 —— 一份作业翻来覆去看不懂要求，
-        一个报错查半天也找不到原因。这些 Agent 最先帮我的，其实是把这种「卡住」的状态缩短了。
-      </p>
-      <p>
-        但用到现在，我慢慢明白一件事：如果只是让它把答案给我，那作业交上去我也还是不会。
-        所以后来我改了个用法 —— 让它讲清楚<b>为什么</b>，我自己再动手写一遍、跑一遍。
-        检查报告里那处量纲错误，是我自己看懂了之后改的；百钱百鸡的优化思路，也是我照着推导又推了一遍才记住的。
-      </p>
-      <p>
-        这份记录里最值得留下的，不是「用了几个 Agent」，而是这几个月里我确实把一些原来不会的东西，
-        变成了自己会的东西。工具会一直换，但是这个习惯我想留下来。
-      </p>
-      <div class="sign">—— 汪子恒，写于 2026 年 10 月</div>
-    </div>
-  </section>
+      <div class="closing-body">
+        <p>
+          刚上大学的时候，我经常在「不知道从哪下手」这件事上耗掉整个晚上——一份作业翻来覆去看不懂要求，
+          一个报错查半天也找不到原因。这些 Agent 最先帮我的，其实是把这种「卡住」的状态缩短了。
+        </p>
+        <p>
+          但用到现在，我慢慢明白一件事：如果只是让它把答案给我，那作业交上去我也还是不会。
+          所以后来我改了个用法——让它讲清楚<b>为什么</b>，我自己再动手写一遍、跑一遍。
+          检查报告里那处量纲错误，是我自己看懂了之后改的；百钱百鸡的优化思路，也是我照着推导又推了一遍才记住的。
+        </p>
+        <p>
+          这份记录里最值得留下的，不是「用了几个 Agent」，而是这几个月里我确实把一些原来不会的东西，
+          变成了<b>自己会的东西</b>。工具会一直换，但是这个习惯我想留下来。
+        </p>
+        <div class="sign">—— 汪子恒，写于 2026 年 10 月</div>
+      </div>
+    </section>
 
-  <footer>
-    <div class="fwrap">
-      个人 Agent 使用记录 · 内容基于 2026 年 9—10 月的真实使用经历整理
+  </div>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>个人 Agent 使用记录 · 基于 2026 年 9—10 月的真实使用经历整理</span>
+      <a href="#intro">回到顶部 ↑</a>
     </div>
   </footer>
-
 </div>
 
 <script>
-(function(){
-  // 卡片展开 / 收起
-  document.querySelectorAll('.card').forEach(function(card){
-    var head = card.querySelector('.card-head');
-    var body = card.querySelector('.card-body');
-    head.addEventListener('click', function(){
-      var isOpen = card.classList.contains('open');
-      if(isOpen){
-        body.style.maxHeight = null;
-        card.classList.remove('open');
-      }else{
-        card.classList.add('open');
-        body.style.maxHeight = body.scrollHeight + 'px';
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll('.side-nav a, .m-nav a'));
+  var sections = Array.prototype.slice.call(document.querySelectorAll('header[id], section[id]'));
+  if (!links.length || !sections.length) return;
+  var lastActive = null;
+
+  function updateActive() {
+    var marker = window.scrollY + 150;
+    var current = sections[0].id;
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].offsetTop <= marker) current = sections[i].id;
+    }
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4) {
+      current = sections[sections.length - 1].id;
+    }
+    links.forEach(function (link) {
+      var isActive = link.getAttribute('href') === '#' + current;
+      link.classList.toggle('active', isActive);
+      if (isActive) link.setAttribute('aria-current', 'location');
+      else link.removeAttribute('aria-current');
+    });
+
+    if (current !== lastActive) {
+      lastActive = current;
+      var mnav = document.querySelector('.m-nav');
+      var activeMobile = mnav && mnav.querySelector('a.active');
+      if (activeMobile && mnav.scrollWidth > mnav.clientWidth) {
+        var left = activeMobile.offsetLeft - mnav.offsetLeft;
+        if (left < mnav.scrollLeft || left + activeMobile.offsetWidth > mnav.scrollLeft + mnav.clientWidth) {
+          mnav.scrollTo({
+            left: Math.max(0, left - (mnav.clientWidth - activeMobile.offsetWidth) / 2),
+            behavior: 'smooth'
+          });
+        }
       }
-    });
-  });
+    }
+  }
 
-  // 窗口变化时，已展开的卡片重新计算高度
-  window.addEventListener('resize', function(){
-    document.querySelectorAll('.card.open .card-body').forEach(function(body){
-      body.style.maxHeight = body.scrollHeight + 'px';
+  var ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(function () {
+      updateActive();
+      ticking = false;
     });
-  });
+  }
 
-  // 分类筛选
-  var btns = document.querySelectorAll('.filters button');
-  var cards = document.querySelectorAll('#agentList .card');
-  btns.forEach(function(btn){
-    btn.addEventListener('click', function(){
-      btns.forEach(function(b){ b.classList.remove('active'); });
-      btn.classList.add('active');
-      var f = btn.dataset.filter;
-      cards.forEach(function(card){
-        var show = (f === 'all') || (card.dataset.cat === f);
-        card.style.display = show ? '' : 'none';
-      });
-    });
-  });
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', function () { lastActive = null; updateActive(); });
+  updateActive();
 })();
 </script>
-
-<!-- 右下角固定入口：三层塔 -->
-<a class="float-entry" href="galgame.html" title="三层塔 · 一个用 galgame 讲多层感知机的短篇">▶ 三层塔</a>
 
 </body>
 </html>
