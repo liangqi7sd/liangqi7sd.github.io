@@ -259,6 +259,51 @@
   }
   .demo-frame iframe{display:block;width:100%;height:640px;border:0;}
 
+  /* ---------- 折叠的早期记录 ---------- */
+  .archive{padding:44px 0 36px;}
+  .archive > summary{
+    display:flex;align-items:flex-start;justify-content:space-between;gap:24px;
+    cursor:pointer;list-style:none;border-radius:6px;
+  }
+  .archive > summary::-webkit-details-marker{display:none;}
+  .archive > summary::marker{content:"";}
+  .archive > summary:focus-visible{outline:2px solid var(--accent);outline-offset:6px;}
+  .archive-copy{min-width:0;}
+  .archive-kicker{
+    display:block;margin-bottom:9px;
+    font-family:var(--mono);font-size:10px;font-weight:600;
+    letter-spacing:.06em;color:var(--accent-ink);
+  }
+  .archive-title{
+    display:flex;align-items:baseline;flex-wrap:wrap;gap:8px;
+    font-size:clamp(21px,2.4vw,25px);font-weight:660;
+    letter-spacing:-.015em;line-height:1.4;color:var(--ink);
+  }
+  .archive-title .count{
+    font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.04em;
+    color:var(--ink-mute);border:1px solid var(--line);border-radius:999px;
+    padding:2px 8px;background:var(--surface);
+  }
+  .archive-desc{display:block;margin-top:7px;font-size:14px;line-height:1.8;color:var(--ink-mute);}
+  .archive-action{
+    flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;
+    margin-top:7px;padding:6px 12px;
+    font-size:12px;font-weight:600;color:var(--accent-ink);
+    background:var(--surface);border:1px solid #cfe0d7;border-radius:999px;
+    white-space:nowrap;transition:background .15s ease,border-color .15s ease;
+  }
+  .archive > summary:hover .archive-action{background:var(--accent-soft);border-color:var(--accent);}
+  .archive-action .chev{display:inline-block;font-size:11px;line-height:1;transition:transform .2s ease;}
+  .archive[open] .archive-action .chev{transform:rotate(180deg);}
+  .archive-action .when-open{display:none;}
+  .archive[open] .archive-action .when-open{display:inline;}
+  .archive[open] .archive-action .when-closed{display:none;}
+  .archive[open] > summary{padding-bottom:20px;border-bottom:1px solid var(--line-soft);}
+  .archive-body{margin-top:26px;}
+  .archive-body > .section{padding:38px 0 34px;}
+  .archive-body > .section:first-child{padding-top:0;}
+  .archive-body > .section:last-child{padding-bottom:0;border-bottom:0;}
+
   /* ---------- 结语 ---------- */
   .closing-body{border-left:2px solid var(--accent);padding-left:22px;}
   .closing-body p{margin:0 0 14px;font-size:15px;line-height:1.95;color:var(--ink-soft);}
@@ -320,6 +365,11 @@
     .entry-icon{width:32px;height:32px;font-size:15px;}
     .work{padding:18px 16px;}
     .work-head{flex-direction:column;gap:12px;}
+    .archive{padding:36px 0 30px;}
+    .archive > summary{flex-direction:column;gap:14px;}
+    .archive-action{margin-top:0;}
+    .archive-body > .section{padding:30px 0 26px;}
+    .archive-body > .section:first-child{padding-top:0;}
     .closing-body{padding-left:16px;}
     .demo-frame iframe{height:520px;}
   }
@@ -346,11 +396,7 @@
   <nav class="side-nav" aria-label="页面目录">
     <a href="#intro"><span class="nav-date">2026 秋</span><span class="nav-label">简介</span></a>
     <a href="#works"><span class="nav-date">2026.10 下旬</span><span class="nav-label">作品</span></a>
-    <a href="#oct-late"><span class="nav-date">2026.10 中下旬</span><span class="nav-label">走向课外</span></a>
-    <a href="#oct-mid"><span class="nav-date">2026.10 中旬</span><span class="nav-label">补基础</span></a>
-    <a href="#oct-early"><span class="nav-date">2026.10 上旬</span><span class="nav-label">作业季</span></a>
-    <a href="#sep-end"><span class="nav-date">2026.09 底</span><span class="nav-label">第一次 PPT</span></a>
-    <a href="#sep-late"><span class="nav-date">2026.09 下旬</span><span class="nav-label">收拾电脑</span></a>
+    <a href="#early"><span class="nav-date">2026.09–10</span><span class="nav-label">早期记录</span></a>
     <a href="#closing"><span class="nav-date">现在</span><span class="nav-label">写在最后</span></a>
   </nav>
 
@@ -369,11 +415,7 @@
   <nav class="m-nav" aria-label="页面目录">
     <a href="#intro">简介</a>
     <a href="#works">作品</a>
-    <a href="#oct-late">10 中下旬</a>
-    <a href="#oct-mid">10 中旬</a>
-    <a href="#oct-early">10 上旬</a>
-    <a href="#sep-end">09 底</a>
-    <a href="#sep-late">09 下旬</a>
+    <a href="#early">早期记录</a>
     <a href="#closing">结语</a>
   </nav>
 </header>
@@ -440,292 +482,309 @@
       </div>
     </section>
 
-    <!-- ========== 2026.10 中下旬 ========== -->
-    <section class="section" id="oct-late">
-      <div class="sec-head">
-        <div class="sec-kicker"><span class="sec-date">2026.10 中下旬</span></div>
-        <h2>从课内走向课外</h2>
-        <p>开始用它准备校新闻中心的面试、找教材资源——用途从「交差」变成了「自己想做的事」。</p>
+    <!-- ========== 2026.09–10 中下旬 · 早期记录（折叠） ========== -->
+    <details class="section archive" id="early">
+      <summary>
+        <span class="archive-copy">
+          <span class="archive-kicker">2026.09 下旬 — 2026.10 中下旬</span>
+          <span class="archive-title">早期记录 <span class="count">5 段</span></span>
+          <span class="archive-desc">从收拾电脑、第一次做 PPT，到作业季、补基础和走向课外，按时间倒序收在这里。</span>
+        </span>
+        <span class="archive-action">
+          <span class="when-closed">展开</span>
+          <span class="when-open">收起</span>
+          <span class="chev" aria-hidden="true">▾</span>
+        </span>
+      </summary>
+      <div class="archive-body">
+        <!-- ========== 2026.10 中下旬 ========== -->
+        <section class="section">
+          <div class="sec-head">
+            <div class="sec-kicker"><span class="sec-date">2026.10 中下旬</span></div>
+            <h2>从课内走向课外</h2>
+            <p>开始用它准备校新闻中心的面试、找教材资源——用途从「交差」变成了「自己想做的事」。</p>
+          </div>
+
+          <div class="entries">
+            <article class="entry">
+              <div class="entry-head">
+                <div class="entry-icon">🎤</div>
+                <div class="entry-title">
+                  <h3>面试准备助手 <span class="tag">校园生活</span></h3>
+                  <p class="role">为校新闻中心面试准备回答材料</p>
+                </div>
+              </div>
+              <div class="entry-body">
+                <div class="entry-col">
+                  <h4>做了什么</h4>
+                  <ul>
+                    <li>针对校新闻中心「海报创作 + 资料整理」的岗位，梳理自己的实际情况</li>
+                    <li>想清楚「有软件基础、但还没有成型作品」该怎么答</li>
+                    <li>准备在学长学姐的面谈里，展示「能干活、好带」</li>
+                  </ul>
+                </div>
+                <div class="entry-col result">
+                  <h4>结果</h4>
+                  <ul>
+                    <li>理清重点：<b>筛的是能不能干活，不是有没有作品集</b></li>
+                    <li>拿到一套贴合真实情况的回答思路，不是套话</li>
+                    <li>面试时心里有底，表达更有条理</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="prompt">
+                <span class="k">当时下的指令</span>
+                <q>我要参加校新闻中心的面试，负责海报创作和资料整理，帮我准备一些回答材料</q>
+              </div>
+            </article>
+
+            <article class="entry">
+              <div class="entry-head">
+                <div class="entry-icon">🔍</div>
+                <div class="entry-title">
+                  <h3>资源检索助手 <span class="tag">技能探索</span></h3>
+                  <p class="role">找教材配套资源、找公开课件</p>
+                </div>
+              </div>
+              <div class="entry-body">
+                <div class="entry-col">
+                  <h4>做了什么</h4>
+                  <ul>
+                    <li>拍照上传一本教材封面，让它帮忙找<b>公开的配套讲义和课件</b></li>
+                    <li>不满足于随手搜到的链接，核实来源是否官方、是否真的能下载</li>
+                    <li>把找到的资源整理成一个可以点开就跳转的索引页</li>
+                  </ul>
+                </div>
+                <div class="entry-col result">
+                  <h4>结果</h4>
+                  <ul>
+                    <li>找到作者团队官方免费开放的配套课件：<b>约 1500 页、50 节课</b></li>
+                    <li>整理出一份本地 HTML 索引页，放在桌面随时点开</li>
+                    <li>学会了「先找官方渠道」这个检索习惯</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="prompt">
+                <span class="k">当时下的指令</span>
+                <q>在 github 上找到这本书的 PDF 版，文件放在桌面上</q>
+                <span class="sep" aria-hidden="true">·</span>
+                <q>找找这本书公开的教学课件</q>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ========== 2026.10 中旬 ========== -->
+        <section class="section">
+          <div class="sec-head">
+            <div class="sec-kicker"><span class="sec-date">2026.10 中旬</span></div>
+            <h2>边交作业，边补基础</h2>
+            <p>把课堂上含糊过去的概念，一个个问清楚。</p>
+          </div>
+
+          <div class="entries">
+            <article class="entry">
+              <div class="entry-head">
+                <div class="entry-icon">💡</div>
+                <div class="entry-title">
+                  <h3>编程答疑助手 <span class="tag">课程学习</span></h3>
+                  <p class="role">课后补概念、解经典例题</p>
+                </div>
+              </div>
+              <div class="entry-body">
+                <div class="entry-col">
+                  <h4>做了什么</h4>
+                  <ul>
+                    <li>问基础概念：Python 里怎么实现矩阵转置，要几种不同写法并对比</li>
+                    <li>解经典例题：用 for 循环解「百钱百鸡」，说清变量设计和运行流程</li>
+                    <li>搞懂小技巧：列表分块打印 <code>for n in range(0,len(lst),5)</code> 是怎么工作的</li>
+                  </ul>
+                </div>
+                <div class="entry-col result">
+                  <h4>结果</h4>
+                  <ul>
+                    <li>一次拿到 <b>3 种</b>矩阵转置写法：<code>zip(*m)</code>、列表推导、NumPy</li>
+                    <li>百钱百鸡从暴力枚举 <b>20 万次</b> 优化到数学推导 <b>O(1)</b></li>
+                    <li>课堂上没听懂的细节，课后自己补上了</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="prompt">
+                <span class="k">当时下的指令</span>
+                <q>python 中怎么实现矩阵的转置</q>
+                <span class="sep" aria-hidden="true">·</span>
+                <q>python for 循环解决百钱百鸡问题</q>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ========== 2026.10 上旬 ========== -->
+        <section class="section">
+          <div class="sec-head">
+            <div class="sec-kicker"><span class="sec-date">2026.10 上旬</span></div>
+            <h2>进入作业季</h2>
+            <p>作业二、文件检查、经典例题集中出现，把「写完」和「写对」分开处理。</p>
+          </div>
+
+          <div class="entries">
+            <article class="entry">
+              <div class="entry-head">
+                <div class="entry-icon">🐍</div>
+                <div class="entry-title">
+                  <h3>代码作业助手 <span class="tag">课程学习</span></h3>
+                  <p class="role">完成课程作业、逐行讲解看不懂的代码</p>
+                </div>
+              </div>
+              <div class="entry-body">
+                <div class="entry-col">
+                  <h4>做了什么</h4>
+                  <ul>
+                    <li>把课程发下来的「作业二.zip」解压后，按题目要求补全 Python 代码</li>
+                    <li>对看不懂的代码<b>逐行解释</b>，比如 <code>prime_set = set(primes)</code> 为什么要转成集合</li>
+                    <li>讲清 <code>strip()</code>、<code>eval()</code> 这些基础但容易混的语法点</li>
+                  </ul>
+                </div>
+                <div class="entry-col result">
+                  <h4>结果</h4>
+                  <ul>
+                    <li>作业从「卡住」到能跑通、能交上去</li>
+                    <li>不只是拿到答案，还看懂了为什么这么写</li>
+                    <li>攒下一批自己写的、能直接复用的代码片段</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="prompt">
+                <span class="k">当时下的指令</span>
+                <q>@作业二.zip 完成压缩包中编写代码的任务</q>
+                <span class="sep" aria-hidden="true">·</span>
+                <q>4_10.py 中 strip() 的作用</q>
+              </div>
+            </article>
+
+            <article class="entry">
+              <div class="entry-head">
+                <div class="entry-icon">✅</div>
+                <div class="entry-title">
+                  <h3>作业自检助手 <span class="tag">课程学习</span></h3>
+                  <p class="role">用要求文件逐条对照检查自己的作业</p>
+                </div>
+              </div>
+              <div class="entry-body">
+                <div class="entry-col">
+                  <h4>做了什么</h4>
+                  <ul>
+                    <li>把「要求文件」和「我的提交」一起交给它，让它逐条比对</li>
+                    <li>输出一份检查报告：符合 / 部分符合 / 不符合，并标注具体行号</li>
+                    <li>改完之后再复查一遍，确认之前的扣分点是否真的修好了</li>
+                  </ul>
+                </div>
+                <div class="entry-col result">
+                  <h4>结果</h4>
+                  <ul>
+                    <li>提交前发现一处量纲错误：<code>20 % V</code> 应为 <code>20000 / V</code></li>
+                    <li>用 <b>4 组</b>测试数据逐一验算，输出与手工计算完全吻合</li>
+                    <li>养成「交之前先自检一遍」的习惯</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="prompt">
+                <span class="k">当时下的指令</span>
+                <q>以「文件二」中的要求作为验收标准，逐条检查「文件一」的实现是否合规</q>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ========== 2026.09 底 ========== -->
+        <section class="section">
+          <div class="sec-head">
+            <div class="sec-kicker"><span class="sec-date">2026.09 底</span></div>
+            <h2>第一次做汇报 PPT</h2>
+            <p>按老师给的排版要求，联网找资料，做出能交的 PPTX。</p>
+          </div>
+
+          <div class="entries">
+            <article class="entry">
+              <div class="entry-head">
+                <div class="entry-icon">📊</div>
+                <div class="entry-title">
+                  <h3>演示文稿助手 <span class="tag">课程学习</span></h3>
+                  <p class="role">做小组汇报 PPT、把 PDF 转成可编辑幻灯片</p>
+                </div>
+              </div>
+              <div class="entry-body">
+                <div class="entry-col">
+                  <h4>做了什么</h4>
+                  <ul>
+                    <li>按给定的排版要求，联网搜集资料并做成 <b>PPTX</b></li>
+                    <li>给已经做好的 PPT 补上<b>真实的实景照片</b>，而不是随便找的素材图</li>
+                    <li>把一份样张 PDF 转成可编辑的 PPT，方便继续改</li>
+                  </ul>
+                </div>
+                <div class="entry-col result">
+                  <h4>结果</h4>
+                  <ul>
+                    <li><b>7 张</b>配图全部可溯源到政府官网、央广网等公开页面</li>
+                    <li>逐张核对页面文字说明确认，没有凭文件名猜</li>
+                    <li>省下了大量「找图 + 排版」的时间</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="prompt">
+                <span class="k">当时下的指令</span>
+                <q>联网搜索江苏省连云港市灌南县的相关资料并以此制作符合图片要求的 pptx 文件</q>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ========== 2026.09 下旬 ========== -->
+        <section class="section">
+          <div class="sec-head">
+            <div class="sec-kicker"><span class="sec-date">2026.09 下旬</span></div>
+            <h2>先让电脑安静下来</h2>
+            <p>第一件事不是学习，是关掉开机自启动、排查弹窗广告。</p>
+          </div>
+
+          <div class="entries">
+            <article class="entry">
+              <div class="entry-head">
+                <div class="entry-icon">🛠️</div>
+                <div class="entry-title">
+                  <h3>电脑维护助手 <span class="tag">设备与效率</span></h3>
+                  <p class="role">排查弹窗广告、整理开机启动项</p>
+                </div>
+              </div>
+              <div class="entry-body">
+                <div class="entry-col">
+                  <h4>做了什么</h4>
+                  <ul>
+                    <li>查清反复出现的<b>弹窗广告</b>到底来自哪些程序</li>
+                    <li>把相关目录整体移到隔离文件夹，而不是直接删除</li>
+                    <li>处理掉后台的开机自启动项，让开机更清爽</li>
+                  </ul>
+                </div>
+                <div class="entry-col result">
+                  <h4>结果</h4>
+                  <ul>
+                    <li><b>27 个</b>弹窗相关目录被隔离，采用移动而非删除，随时可还原</li>
+                    <li>搞清楚了还残留哪些需要管理员权限才能处理的部分</li>
+                    <li>电脑安静了不少，也学会了怎么自己排查这类问题</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="prompt">
+                <span class="k">当时下的指令</span>
+                <q>我的电脑有广告弹窗，帮我检查来自哪</q>
+                <span class="sep" aria-hidden="true">·</span>
+                <q>关闭 WorkBuddy 的开机自启动</q>
+              </div>
+            </article>
+          </div>
+        </section>
       </div>
-
-      <div class="entries">
-        <article class="entry">
-          <div class="entry-head">
-            <div class="entry-icon">🎤</div>
-            <div class="entry-title">
-              <h3>面试准备助手 <span class="tag">校园生活</span></h3>
-              <p class="role">为校新闻中心面试准备回答材料</p>
-            </div>
-          </div>
-          <div class="entry-body">
-            <div class="entry-col">
-              <h4>做了什么</h4>
-              <ul>
-                <li>针对校新闻中心「海报创作 + 资料整理」的岗位，梳理自己的实际情况</li>
-                <li>想清楚「有软件基础、但还没有成型作品」该怎么答</li>
-                <li>准备在学长学姐的面谈里，展示「能干活、好带」</li>
-              </ul>
-            </div>
-            <div class="entry-col result">
-              <h4>结果</h4>
-              <ul>
-                <li>理清重点：<b>筛的是能不能干活，不是有没有作品集</b></li>
-                <li>拿到一套贴合真实情况的回答思路，不是套话</li>
-                <li>面试时心里有底，表达更有条理</li>
-              </ul>
-            </div>
-          </div>
-          <div class="prompt">
-            <span class="k">当时下的指令</span>
-            <q>我要参加校新闻中心的面试，负责海报创作和资料整理，帮我准备一些回答材料</q>
-          </div>
-        </article>
-
-        <article class="entry">
-          <div class="entry-head">
-            <div class="entry-icon">🔍</div>
-            <div class="entry-title">
-              <h3>资源检索助手 <span class="tag">技能探索</span></h3>
-              <p class="role">找教材配套资源、找公开课件</p>
-            </div>
-          </div>
-          <div class="entry-body">
-            <div class="entry-col">
-              <h4>做了什么</h4>
-              <ul>
-                <li>拍照上传一本教材封面，让它帮忙找<b>公开的配套讲义和课件</b></li>
-                <li>不满足于随手搜到的链接，核实来源是否官方、是否真的能下载</li>
-                <li>把找到的资源整理成一个可以点开就跳转的索引页</li>
-              </ul>
-            </div>
-            <div class="entry-col result">
-              <h4>结果</h4>
-              <ul>
-                <li>找到作者团队官方免费开放的配套课件：<b>约 1500 页、50 节课</b></li>
-                <li>整理出一份本地 HTML 索引页，放在桌面随时点开</li>
-                <li>学会了「先找官方渠道」这个检索习惯</li>
-              </ul>
-            </div>
-          </div>
-          <div class="prompt">
-            <span class="k">当时下的指令</span>
-            <q>在 github 上找到这本书的 PDF 版，文件放在桌面上</q>
-            <span class="sep" aria-hidden="true">·</span>
-            <q>找找这本书公开的教学课件</q>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ========== 2026.10 中旬 ========== -->
-    <section class="section" id="oct-mid">
-      <div class="sec-head">
-        <div class="sec-kicker"><span class="sec-date">2026.10 中旬</span></div>
-        <h2>边交作业，边补基础</h2>
-        <p>把课堂上含糊过去的概念，一个个问清楚。</p>
-      </div>
-
-      <div class="entries">
-        <article class="entry">
-          <div class="entry-head">
-            <div class="entry-icon">💡</div>
-            <div class="entry-title">
-              <h3>编程答疑助手 <span class="tag">课程学习</span></h3>
-              <p class="role">课后补概念、解经典例题</p>
-            </div>
-          </div>
-          <div class="entry-body">
-            <div class="entry-col">
-              <h4>做了什么</h4>
-              <ul>
-                <li>问基础概念：Python 里怎么实现矩阵转置，要几种不同写法并对比</li>
-                <li>解经典例题：用 for 循环解「百钱百鸡」，说清变量设计和运行流程</li>
-                <li>搞懂小技巧：列表分块打印 <code>for n in range(0,len(lst),5)</code> 是怎么工作的</li>
-              </ul>
-            </div>
-            <div class="entry-col result">
-              <h4>结果</h4>
-              <ul>
-                <li>一次拿到 <b>3 种</b>矩阵转置写法：<code>zip(*m)</code>、列表推导、NumPy</li>
-                <li>百钱百鸡从暴力枚举 <b>20 万次</b> 优化到数学推导 <b>O(1)</b></li>
-                <li>课堂上没听懂的细节，课后自己补上了</li>
-              </ul>
-            </div>
-          </div>
-          <div class="prompt">
-            <span class="k">当时下的指令</span>
-            <q>python 中怎么实现矩阵的转置</q>
-            <span class="sep" aria-hidden="true">·</span>
-            <q>python for 循环解决百钱百鸡问题</q>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ========== 2026.10 上旬 ========== -->
-    <section class="section" id="oct-early">
-      <div class="sec-head">
-        <div class="sec-kicker"><span class="sec-date">2026.10 上旬</span></div>
-        <h2>进入作业季</h2>
-        <p>作业二、文件检查、经典例题集中出现，把「写完」和「写对」分开处理。</p>
-      </div>
-
-      <div class="entries">
-        <article class="entry">
-          <div class="entry-head">
-            <div class="entry-icon">🐍</div>
-            <div class="entry-title">
-              <h3>代码作业助手 <span class="tag">课程学习</span></h3>
-              <p class="role">完成课程作业、逐行讲解看不懂的代码</p>
-            </div>
-          </div>
-          <div class="entry-body">
-            <div class="entry-col">
-              <h4>做了什么</h4>
-              <ul>
-                <li>把课程发下来的「作业二.zip」解压后，按题目要求补全 Python 代码</li>
-                <li>对看不懂的代码<b>逐行解释</b>，比如 <code>prime_set = set(primes)</code> 为什么要转成集合</li>
-                <li>讲清 <code>strip()</code>、<code>eval()</code> 这些基础但容易混的语法点</li>
-              </ul>
-            </div>
-            <div class="entry-col result">
-              <h4>结果</h4>
-              <ul>
-                <li>作业从「卡住」到能跑通、能交上去</li>
-                <li>不只是拿到答案，还看懂了为什么这么写</li>
-                <li>攒下一批自己写的、能直接复用的代码片段</li>
-              </ul>
-            </div>
-          </div>
-          <div class="prompt">
-            <span class="k">当时下的指令</span>
-            <q>@作业二.zip 完成压缩包中编写代码的任务</q>
-            <span class="sep" aria-hidden="true">·</span>
-            <q>4_10.py 中 strip() 的作用</q>
-          </div>
-        </article>
-
-        <article class="entry">
-          <div class="entry-head">
-            <div class="entry-icon">✅</div>
-            <div class="entry-title">
-              <h3>作业自检助手 <span class="tag">课程学习</span></h3>
-              <p class="role">用要求文件逐条对照检查自己的作业</p>
-            </div>
-          </div>
-          <div class="entry-body">
-            <div class="entry-col">
-              <h4>做了什么</h4>
-              <ul>
-                <li>把「要求文件」和「我的提交」一起交给它，让它逐条比对</li>
-                <li>输出一份检查报告：符合 / 部分符合 / 不符合，并标注具体行号</li>
-                <li>改完之后再复查一遍，确认之前的扣分点是否真的修好了</li>
-              </ul>
-            </div>
-            <div class="entry-col result">
-              <h4>结果</h4>
-              <ul>
-                <li>提交前发现一处量纲错误：<code>20 % V</code> 应为 <code>20000 / V</code></li>
-                <li>用 <b>4 组</b>测试数据逐一验算，输出与手工计算完全吻合</li>
-                <li>养成「交之前先自检一遍」的习惯</li>
-              </ul>
-            </div>
-          </div>
-          <div class="prompt">
-            <span class="k">当时下的指令</span>
-            <q>以「文件二」中的要求作为验收标准，逐条检查「文件一」的实现是否合规</q>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ========== 2026.09 底 ========== -->
-    <section class="section" id="sep-end">
-      <div class="sec-head">
-        <div class="sec-kicker"><span class="sec-date">2026.09 底</span></div>
-        <h2>第一次做汇报 PPT</h2>
-        <p>按老师给的排版要求，联网找资料，做出能交的 PPTX。</p>
-      </div>
-
-      <div class="entries">
-        <article class="entry">
-          <div class="entry-head">
-            <div class="entry-icon">📊</div>
-            <div class="entry-title">
-              <h3>演示文稿助手 <span class="tag">课程学习</span></h3>
-              <p class="role">做小组汇报 PPT、把 PDF 转成可编辑幻灯片</p>
-            </div>
-          </div>
-          <div class="entry-body">
-            <div class="entry-col">
-              <h4>做了什么</h4>
-              <ul>
-                <li>按给定的排版要求，联网搜集资料并做成 <b>PPTX</b></li>
-                <li>给已经做好的 PPT 补上<b>真实的实景照片</b>，而不是随便找的素材图</li>
-                <li>把一份样张 PDF 转成可编辑的 PPT，方便继续改</li>
-              </ul>
-            </div>
-            <div class="entry-col result">
-              <h4>结果</h4>
-              <ul>
-                <li><b>7 张</b>配图全部可溯源到政府官网、央广网等公开页面</li>
-                <li>逐张核对页面文字说明确认，没有凭文件名猜</li>
-                <li>省下了大量「找图 + 排版」的时间</li>
-              </ul>
-            </div>
-          </div>
-          <div class="prompt">
-            <span class="k">当时下的指令</span>
-            <q>联网搜索江苏省连云港市灌南县的相关资料并以此制作符合图片要求的 pptx 文件</q>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- ========== 2026.09 下旬 ========== -->
-    <section class="section" id="sep-late">
-      <div class="sec-head">
-        <div class="sec-kicker"><span class="sec-date">2026.09 下旬</span></div>
-        <h2>先让电脑安静下来</h2>
-        <p>第一件事不是学习，是关掉开机自启动、排查弹窗广告。</p>
-      </div>
-
-      <div class="entries">
-        <article class="entry">
-          <div class="entry-head">
-            <div class="entry-icon">🛠️</div>
-            <div class="entry-title">
-              <h3>电脑维护助手 <span class="tag">设备与效率</span></h3>
-              <p class="role">排查弹窗广告、整理开机启动项</p>
-            </div>
-          </div>
-          <div class="entry-body">
-            <div class="entry-col">
-              <h4>做了什么</h4>
-              <ul>
-                <li>查清反复出现的<b>弹窗广告</b>到底来自哪些程序</li>
-                <li>把相关目录整体移到隔离文件夹，而不是直接删除</li>
-                <li>处理掉后台的开机自启动项，让开机更清爽</li>
-              </ul>
-            </div>
-            <div class="entry-col result">
-              <h4>结果</h4>
-              <ul>
-                <li><b>27 个</b>弹窗相关目录被隔离，采用移动而非删除，随时可还原</li>
-                <li>搞清楚了还残留哪些需要管理员权限才能处理的部分</li>
-                <li>电脑安静了不少，也学会了怎么自己排查这类问题</li>
-              </ul>
-            </div>
-          </div>
-          <div class="prompt">
-            <span class="k">当时下的指令</span>
-            <q>我的电脑有广告弹窗，帮我检查来自哪</q>
-            <span class="sep" aria-hidden="true">·</span>
-            <q>关闭 WorkBuddy 的开机自启动</q>
-          </div>
-        </article>
-      </div>
-    </section>
+    </details>
 
     <!-- ========== 现在 · 写在最后 ========== -->
     <section class="section" id="closing">
@@ -766,9 +825,21 @@
 <script>
 (function () {
   var links = Array.prototype.slice.call(document.querySelectorAll('.side-nav a, .m-nav a'));
-  var sections = Array.prototype.slice.call(document.querySelectorAll('header[id], section[id]'));
+  var sections = Array.prototype.slice.call(document.querySelectorAll('header[id], section[id], details[id]'));
   if (!links.length || !sections.length) return;
   var lastActive = null;
+  var earlySection = document.getElementById('early');
+  if (earlySection) {
+    links.forEach(function (link) {
+      if (link.getAttribute('href') === '#early') {
+        link.addEventListener('click', function () { earlySection.open = true; });
+      }
+    });
+    if (window.location.hash === '#early') earlySection.open = true;
+    earlySection.addEventListener('toggle', function () {
+      window.requestAnimationFrame(updateActive);
+    });
+  }
 
   function updateActive() {
     var marker = window.scrollY + 150;
